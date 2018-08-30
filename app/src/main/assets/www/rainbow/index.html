@@ -1,0 +1,272 @@
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+	<link href="css/style.css" rel="stylesheet">
+
+	<style type="text/css">
+		html{
+			margin: 0; padding: 0;
+			background: #ecf0f1;
+		}
+		body{
+			margin: 0; padding: 0;
+			overflow-y: scroll;
+		}
+		.top_wrapper{
+			background: #fff;
+			padding: 0;
+			box-shadow: 1px 0px 5px #aaa;
+			border-bottom: 1px #ccc solid;
+			position: fixed;
+			left: 0;
+			right: 0;
+			top: 0;
+			z-index: 99;
+		}
+		#t_status{
+			margin-top: 10px;
+			padding: 0;
+			width: calc(100% - 60px);
+			margin-left: 10px;
+			line-height: 1;
+			border: 0;
+			resize: none;
+			outline: none;
+			font-size: 12pt;
+		}
+		#b_send{
+			float: right;
+			width: 30px;
+			margin-top: 5px;
+			height: 30px;
+			margin-right: 10px;
+		}
+
+		.container{
+			display: block;
+			padding: 10px;
+			margin-top:43px;
+		}
+
+		.status_wrapper{
+			background: #fff;
+			display: block;
+			padding: 10px;
+			box-shadow: 2px 3px 5px #aaa;
+			margin-bottom: 15px;
+		}
+
+		.status_top_wrapper{
+			border-bottom: 1px #ced4d8 solid;
+			padding-bottom: 10px;
+		}
+
+		.user_photo{
+			width: 40px;
+			height: 40px;
+			float: left;
+		}
+
+		.content{
+			margin-left: 50px;
+			font-size: 11pt;
+		}
+
+		.user_name{
+			padding-top: 3px;
+			display: block;
+			font-weight: bold;
+		}
+
+		.status_time{
+			float:right;
+			font-size: small;
+			color: #7f8c8d;
+			margin-top: 7px;
+		}
+
+		.status_midle_wrapper{
+			padding-top: 10px;
+			font-size: 8pt;
+			padding-bottom: 10px;
+		}
+
+		.status_bottom_wrapper{
+			border-top: 1px #eee solid;
+			text-align: center;
+			padding-top: 5px;
+			position: relative;
+		}
+		.like_btn, .comment_btn{
+			height:25px;
+			position: absolute;
+		}
+
+		.likes_count, .comments_count{
+			font-size: 10pt;
+			color: #7f8c8d;
+			margin-bottom: 5px;
+			line-height: 32px;
+			margin-left: 35px;
+		}
+
+	</style>
+</head>
+<body>
+
+<div class="top_wrapper">
+	<textarea id="t_status" maxlength="140" placeholder="What's on your mind" autofocus></textarea>
+	<img src="img/send.png" id="b_send">
+</div>
+
+<div class="container">
+	
+</div>
+
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/jquery.autogrowtextarea.min.js"></script>
+<script type="text/javascript">
+
+var myJID = null;
+var myFriends = [];
+
+var API_HOST = 'http://openrainbow-indonesia.org/api/';
+
+function create_feed(contact, feed){
+	var user_photo = 'img/nofoto.jpg';
+	if(contact != null){
+		if(contact[2] != ''){
+			user_photo = contact[2];
+		}
+	}
+
+	var content_feed = 
+		`
+			<div class="status_wrapper" id="feed_`+feed.id_status+`"">
+				<div class="status_top_wrapper">
+					<img src="`+user_photo+`" class="user_photo">
+					<div class="content">
+						<span class="status_time">`+Android.getShortDate(feed.created_at)+`</span>
+						<span class="user_name">`+(contact != null ? contact[1] : ``)+`</span>
+						<span>`+feed.status.replace(/\n/g, "<br />")+`</span>
+					</div>
+				</div>
+				<div class="status_bottom_wrapper">
+					<div class="likes_wrapper" style="float:left">
+						<img src="`+(feed.isliked ? `img/liked.png` : `img/not-liked.png`)+`" class="like_btn" data-sid="`+feed.id_status+`" data-isliked="`+(feed.isliked ? 1 : 0)+`"">
+						<span class="likes_count"><span class="like_n_count">`+feed.liked_count+`</span> like`+(feed.liked_count > 1 ? `s` : ``)+`</span>
+					</div>
+					<div class="comments_wrapper" data-sid="`+feed.id_status+`" style="float:right">
+						<img src="img/comment.png" class="comment_btn">
+						<span class="comments_count"><span class="comment_n_count">`+feed.comments_count+`</span> comment`+(feed.comments_count > 1 ? `s` : ``)+`</span>
+					</div>
+					<div style="clear:both"></div>
+				</div>
+			</div>
+		`;
+		return content_feed;
+}
+
+function refresh_feeds(){
+	var jid_s = myFriends;
+	jid_s.push(myJID);
+
+	$.post(
+		API_HOST + 'feeds',
+		{
+			jid : myJID,
+			jid_s : jid_s
+		}
+	).done(function(data){
+		try{
+			var feeds = $.parseJSON(data);
+			var content_feeds = '';
+			$.each(feeds, function(key, val){
+				var scontact = Android.getContact(val.jid);
+				var contact;
+				try{
+					contact = $.parseJSON(scontact);
+				}catch(exc){
+					contact = null;
+				}
+
+				content_feeds += create_feed(contact, val);
+			});
+
+			$('.container').html(content_feeds);
+		}catch(exception){
+			console.log(exception);
+		}
+	}).fail(function(){
+
+	}).always(function(){
+		window.setTimeout(function(){
+			refresh_feeds();
+		}, 30000);
+	});
+}
+
+$(document).ready(function(){
+	$("#t_status").autoGrow();
+
+	$('#b_send').click(function(e){
+		var status = $('#t_status').val();
+		$.post(
+			API_HOST+'set_status',
+			{
+				jid 	: myJID,
+				status 	: status
+			}
+		).done(function(data){
+			$('#t_status').val('');
+			refresh_feeds();
+			Android.updateLastStatus(status);
+		}).fail(function(){
+		}).always(function(){
+
+		});
+	});
+
+	$('.container').on('click', '.like_btn', function(e){
+		var sid = $(this).data('sid');
+		var isliked = $(this).data('isliked');
+		var _this = $(this);
+
+		//change UI, supaya client merasa cepat
+		_this.data('isliked', (isliked == 1 ? 0 : 1));
+		_this.attr('src', (isliked ? `img/not-liked.png` : `img/liked.png`));
+		var count = parseInt($('#feed_'+sid+' .like_n_count').text());
+		count = isliked ? count - 1 : count + 1;
+		$('#feed_'+sid+' .like_n_count').text(count);
+		//--------
+
+		$.post(
+			API_HOST + 'set_like',
+			{
+				'jid'		: myJID,
+				'sid'		: sid,
+				'isliked'	: isliked
+			}
+		).done(function(data){
+			_this.attr('data-isliked', (isliked == 1 ? '0' : '1'));
+			_this.attr('src', (isliked ? `img/not-liked.png` : `img/liked.png`));
+		}).fail(function(){
+		}).always(function(){})
+	});
+
+	$('.container').on('click', '.comments_wrapper', function(){
+		var sid = $(this).data('sid');
+		Android.showComment(sid);
+	});
+
+	try{
+		myJID = Android.getJID();
+		myFriends = $.parseJSON(Android.getFriendsJID());
+	}catch(e){}
+
+	refresh_feeds();
+})
+
+</script>
+</body>
+</html>

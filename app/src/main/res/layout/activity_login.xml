@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBgLogin"
+    tools:context="id.co.ale.rainbowDev.LoginActivity">
+
+    <TextView
+        android:id="@+id/app_info"
+        android:layout_width="346dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:text="@string/app_copyright"
+        android:textAlignment="center"
+        android:textColor="#333333"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        tools:text="@string/app_copyright" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="263dp"
+        android:layout_height="95dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="40dp"
+        android:layout_weight="0.10"
+        android:scaleType="fitCenter"
+        app:layout_constraintHorizontal_bias="0.504"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/logo_landscape2" />
+
+    <LinearLayout
+        android:id="@+id/loginContainer"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="#fff"
+        android:orientation="vertical"
+        android:weightSum="1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.51"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView2"
+        app:layout_constraintVertical_bias="0.076">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignLeft="@+id/inputEmail"
+                android:layout_alignStart="@+id/inputEmail"
+                android:layout_alignTop="@+id/inputEmail"
+                android:adjustViewBounds="false"
+                android:background="@drawable/bg_gradient_rounded"
+                android:cropToPadding="false"
+                android:padding="14dp"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/ic_login_user" />
+
+            <AutoCompleteTextView
+                android:id="@+id/inputEmail"
+                style="@style/loginInput"
+                android:layout_width="match_parent"
+                android:background="@drawable/textfield_bg"
+                android:hint="@string/login_email_hint"
+                android:text="try35u@gmail.com"
+                android:inputType="textEmailAddress" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <ImageView
+                android:id="@+id/imageView5"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignBottom="@+id/inputPassword"
+                android:layout_alignLeft="@+id/inputPassword"
+                android:layout_alignStart="@+id/inputPassword"
+                android:layout_alignTop="@+id/inputPassword"
+                android:adjustViewBounds="false"
+                android:background="@drawable/bg_gradient_rounded"
+                android:cropToPadding="false"
+                android:padding="14dp"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/ic_login_pass"
+                tools:layout_editor_absoluteX="0dp"
+                tools:layout_editor_absoluteY="223dp" />
+
+            <EditText
+                android:id="@+id/inputPassword"
+                style="@style/loginInput"
+                android:layout_height="50dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/textfield_bg"
+                android:hint="@string/login_pass_hint"
+                android:text="Try@08986044235"
+                android:inputType="textPassword"
+                android:paddingRight="40dp" />
+
+            <ImageView
+                android:id="@+id/btn_show_password"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignEnd="@+id/inputPassword"
+                android:layout_alignRight="@+id/inputPassword"
+                android:layout_alignTop="@+id/inputPassword"
+                android:adjustViewBounds="false"
+                android:cropToPadding="false"
+                android:padding="14dp"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/eye_slash" />
+        </RelativeLayout>
+
+
+        <Button
+            android:id="@+id/buttonLogin"
+            style="@style/loginButton"
+            android:text="@string/login_btn_login" />
+
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/loginProgress"
+        style="@style/Widget.AppCompat.ProgressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.499" />
+
+    <LinearLayout
+        android:layout_width="3dp"
+        android:layout_height="551dp"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="8dp"></LinearLayout>
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="15dp"
+        android:layout_weight="1"
+        android:text="@string/powered"
+        android:textAlignment="center"
+        android:textColor="#333"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/loginContainer" />
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="381dp"
+        android:layout_height="59dp"
+        android:layout_marginBottom="24dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="24dp"
+        android:maxHeight="100dp"
+        android:maxWidth="100dp"
+        app:layout_constraintBottom_toTopOf="@+id/app_info"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView4"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/logo_rainbow" />
+
+    <TextView
+        android:id="@+id/version_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:text="TextView"
+
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</android.support.constraint.ConstraintLayout>

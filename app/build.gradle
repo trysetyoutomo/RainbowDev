@@ -1,0 +1,105 @@
+apply plugin: 'com.android.application'
+//System.setProperty('java.awt.headless', 'false')
+
+import groovy.swing.SwingBuilder
+android {
+    lintOptions {
+        checkReleaseBuilds false
+        disable 'MissingTranslation'
+        // Or, if you prefer, you can continue to check for errors in release builds,
+        // but continue the build even when errors are found:
+        abortOnError false
+    }
+    configurations {
+        all {
+            exclude group: 'org.json', module: 'json'
+        }
+    }
+//    lintOptions {
+//        disable 'TypographyFractions','TypographyQuotes'
+//    }
+    compileSdkVersion 26
+    buildToolsVersion '26.0.2'
+    defaultConfig {
+        applicationId "id.co.ale.rainbowDev"
+        minSdkVersion 16
+        targetSdkVersion 26
+        versionCode 3
+        versionName "Tukang Dagang, Agustus 2018"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
+        multiDexEnabled = true
+    }
+    compileOptions {
+        sourceCompatibility 1.8
+        targetCompatibility 1.8
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+//    splits {
+//        abi {
+//            enable true
+//            reset()
+//            include "x86"
+//            universalApk true
+//        }
+//    }
+}
+
+allprojects {
+    repositories {
+        maven { url "https://jitpack.io" }
+        maven { url "http://dl.bintray.com/amulyakhare/maven" }
+        maven { url "https://maven.google.com" }
+        maven { url "https://dl.bintray.com/drummer-aidan/maven" }
+        maven { url "http://maven.openrainbow.io" }
+        mavenCentral()
+    }
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile files('libs/zxingorg-3.3.0-sources.jar')
+    implementation(project(path: ":CordovaLib2"))
+//    compile 'com.android.support:appcompat-v7:26.+'
+    compile 'com.android.support:appcompat-v7:26.1'
+//    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile 'com.android.support.constraint:constraint-layout:1.1.2'
+    //    compile 'com.github.Rainbow-CPaaS:Rainbow-Android-SDK:1.33.0'
+    compile('com.ale:rainbowsdk:1.43.0@aar') {
+        transitive = true
+        exclude group: 'xpp3', module: 'xpp3'
+    }
+//    compile 'com.android.support:design:26.+'
+    compile 'com.android.support:design:26.+'
+//    compile 'com.android.support:support-vector-drawable:26.+'
+    compile 'com.android.support:support-vector-drawable:26.1'
+//    compile 'com.android.support:support-v4:26.+'
+    compile 'com.android.support:support-v4:26.1'
+    compile 'com.amulyakhare:com.amulyakhare.textdrawable:1.0.1'
+    compile 'com.github.GrenderG:Toasty:1.2.5'
+    compile 'net.the4thdimension:audio-wife:1.0.3'
+    compile 'com.github.stfalcon:frescoimageviewer:0.5.0'
+    compile 'com.jsibbold:zoomage:1.1.0'
+//    compile 'com.theartofdev.edmodo:android-image-cropper:2.5.+'
+    compile 'com.theartofdev.edmodo:android-image-cropper:2.5.1'
+    compile 'jp.wasabeef:blurry:2.1.1'
+    //    compile 'com.journeyapps:zxing-android-embedded:3.5.0'
+    compile 'com.journeyapps:zxing-android-embedded:2.0.1@aar'
+    compile 'com.journeyapps:zxing-android-legacy:2.0.1@aar'
+    compile 'com.journeyapps:zxing-android-integration:2.0.1@aar'
+    compile 'com.google.zxing:core:3.2.0'
+//    compile 'com.android.support:multidex:1.0.1'
+    compile 'com.android.support:multidex:1.0.3'
+//    compile 'junit:junit:4.12'
+    compile ('junit:junit:4.12'){
+        exclude group: 'org.hamcrest', module:'hamcrest-core'
+    }
+
+    implementation files('libs/cordova-4.1.1')
+
+}

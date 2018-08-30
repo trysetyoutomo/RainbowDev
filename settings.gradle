@@ -1,0 +1,2 @@
+include ':app', ':CordovaLib2'
+project(':CordovaLib2').projectDir = new File('CordovaLib')

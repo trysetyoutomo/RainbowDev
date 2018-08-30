@@ -1,0 +1,228 @@
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+	<style type="text/css">
+		*{
+			font-size: 11pt;
+		}
+		html{
+			margin: 0; padding: 0;
+			background: #fff;
+		}
+		body{
+			margin: 0; padding: 0;
+			overflow-y: scroll;
+		}
+
+		.bottom_wrapper{
+			position: fixed;
+			bottom: 0;
+			width: 100%;
+			background: #fff;
+			padding: 0;
+			border-top: 1px #f0f0f0 solid
+		}
+		#t_comment{
+			margin-top: 10px;
+			padding: 0;
+			width: calc(100% - 60px);
+			margin-left: 10px;
+			line-height: 1;
+			border: 0;
+			resize: none;
+			outline: none;
+		}
+		#b_send{
+			position: fixed;
+			width: 30px;
+			bottom: 7px;
+			height: 30px;
+			right: 10px;
+		}
+
+		.container{
+			display: block;
+			padding: 10px;
+			margin-bottom: 30px;
+			height: 100vh;
+			overflow-y: scroll;
+		}
+
+		.comment_wrapper{
+			display: block;
+			padding: 10px;
+			border-bottom: 1px #f0f0f0 solid;
+		}
+
+		.comment_top_wrapper{
+			clear: both;
+			margin-bottom: 5px;
+		}
+		.user_photo{
+			width: 35px;
+			height: 35px;
+			float: left;
+			border-radius: 20px;
+		}
+
+		.content{
+			margin-left: 50px;
+			font-size: 11pt;
+		}
+
+		.user_name{
+			padding-top: 3px;
+			display: block;
+			font-weight: bold;
+			margin-bottom: 3px;
+		}
+
+		.comment_time{
+			float:right;
+			font-size: 9pt;
+			color: #7f8c8d;
+			margin-top: 4px;
+		}
+
+	</style>
+</head>
+<body>
+<div class="container">
+
+</div>
+
+<div class="bottom_wrapper">
+	<textarea id="t_comment" maxlength="140" placeholder="Write a comment..."></textarea>
+	<img src="img/send_comment.png" id="b_send">
+</div>
+
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/jquery.autogrowtextarea.min.js"></script>
+<script type="text/javascript">
+
+var myJID = null;
+var API_HOST = 'http://openrainbow-indonesia.org/api/';
+var SID = null;
+
+var contactTemp = {};
+
+function set_contact(scontact){
+	console.log('scontact ',scontact);
+	var contact;
+	try{
+		contact = $.parseJSON(scontact);
+	}catch(exc){
+		console.log('exc ', exc);
+		contact = null;
+	}
+
+	if(contact != null){
+		var jid = contact[0];
+		var nama = contact[1];
+		var photo = contact[2];
+
+		console.log('jid ', jid);
+		console.log('nama ', nama);
+		console.log('photo ', photo);
+
+		$('.comment_wrapper[data-jid="'+jid+'"] .user_photo').attr('src', photo);
+		$('.comment_wrapper[data-jid="'+jid+'"] .user_name').text(nama);
+	}
+}
+
+function create_comment(contact, comment){
+	var user_photo = 'img/nofoto.jpg';
+	if(contact != null){
+		if(contact[2] != ''){
+			user_photo = contact[2];
+		}
+	}
+	
+	var content_comment = 
+		`
+			<div class="comment_wrapper" id="feed_`+comment.id_comment+`"" data-jid="`+comment.jid+`">
+				<div class="comment_top_wrapper">
+					<img src="`+user_photo+`" class="user_photo">
+					<div class="content">
+						<span class="comment_time">`+Android.getShortDate(comment.created_at)+`</span>
+						<span class="user_name">`+(contact != null ? contact[1] : `Mitra Paytren`)+`</span>
+						<span>`+comment.comment.replace(/\n/g, "<br />")+`</span>
+					</div>
+				</div>
+			</div>
+		`;
+
+		return content_comment;
+}
+
+function refresh_comments(){
+	$.post(
+		API_HOST + 'comments',
+		{
+			sid : SID
+		}
+	).done(function(data){
+		var comments = $.parseJSON(data);
+
+		var content_comments = '';
+		$.each(comments, function(key, val){
+			var scontact = Android.getContact(val.jid);
+
+			var contact;
+			try{
+				contact = $.parseJSON(scontact);
+			}catch(exc){
+				contact = null;
+			}
+
+			if(contact == null){
+				Android.requestContact(val.jid);
+			}
+
+			content_comments += create_comment(contact, val);
+		});
+
+		$('.container').html(content_comments);
+		$(".container").animate({ scrollTop: $(".container")[0].scrollHeight}, 1000);
+	}).fail(function(){
+	}).always(function(){
+		//window.setTimeout(refresh_comments(), 30000);
+	});
+}
+
+
+$(document).ready(function(){
+	$("#t_comment").autoGrow();
+
+	$('#b_send').click(function(){
+		var comment = $('#t_comment').val();
+		if(comment.length > 0 && comment!=null && comment!=undefined){
+			$('#b_send').hide();
+
+			$.post(
+				API_HOST+'set_comment',
+				{
+					jid 	: myJID,
+					sid 	: SID,
+					comment : comment
+				}
+			).done(function(data){
+				$('#t_comment').val('');
+				refresh_comments();
+			}).fail(function(){
+			}).always(function(){
+				$('#b_send').show();
+			});
+		}
+	});
+
+	try{
+		myJID = Android.getJID();
+		SID = Android.getSID();
+	}catch(e){}
+
+	refresh_comments();
+});
+</script>
+</body>
+</html>

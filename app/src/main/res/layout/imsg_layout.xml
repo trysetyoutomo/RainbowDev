@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="id.co.ale.rainbowDev.ImsgActivity">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context="id.co.paytren.rainbowDev.t">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            android:weightSum="1"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            android:background="@drawable/navbar_shape"
+            android:contentInsetLeft="0dp"
+            android:contentInsetStart="0dp"
+            app:contentInsetLeft="0dp"
+            app:contentInsetStart="0dp"
+            android:contentInsetRight="0dp"
+            android:contentInsetEnd="0dp"
+            app:contentInsetRight="0dp"
+            app:contentInsetEnd="0dp">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:focusableInTouchMode="true">
+
+                <EditText
+                    android:id="@+id/input_search"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:hint="@string/toolbar_search"
+                    android:paddingRight="40dp"
+                    android:singleLine="true"
+                    android:theme="@style/searchInput"
+                    android:visibility="invisible" />
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="55dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:adjustViewBounds="false"
+                    android:cropToPadding="false"
+                    android:padding="14dp"
+                    android:scaleType="fitCenter"
+                    app:srcCompat="@drawable/ic_search_white"
+                    android:id="@+id/btn_search" />
+
+                <ImageView
+                    android:id="@+id/msg_header"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignTop="@+id/btn_search"
+                    android:layout_toLeftOf="@+id/btn_search"
+                    android:layout_toStartOf="@+id/btn_search"
+                    android:paddingBottom="12dp"
+                    android:paddingTop="12dp"
+                    android:scaleType="fitStart"
+                    app:srcCompat="@drawable/messenger_header_2" />
+            </RelativeLayout>
+
+        </android.support.v7.widget.Toolbar>
+
+        <FrameLayout
+            android:id="@+id/content"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <include layout="@layout/content_imsg" />
+
+        </FrameLayout>
+
+        <android.support.design.widget.BottomNavigationView
+            android:id="@+id/bottomNavigation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:background="@drawable/bottombar_shape"
+            app:itemIconTint="@xml/bottom_nav_selector"
+            app:itemTextColor="@xml/bottom_nav_selector"
+            app:menu="@menu/navigation" />
+
+    </LinearLayout>
+</android.support.design.widget.CoordinatorLayout>
