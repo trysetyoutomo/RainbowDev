@@ -122,7 +122,7 @@ public class RainbowService extends Service {
             if(isNotify){
                 NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
                         getApplicationContext())
-                        .setSmallIcon(R.mipmap.ic_launcher)
+                        .setSmallIcon(R.mipmap.logo2)
                         .setContentTitle(nTitle)
                         .setContentText(nContent)
                         .setAutoCancel(true)

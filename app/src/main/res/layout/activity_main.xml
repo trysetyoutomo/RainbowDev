@@ -50,7 +50,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/logo_landscape2" />
+        app:srcCompat="@drawable/warna" />
 
     <TextView
         android:id="@+id/app_info"

@@ -3,15 +3,15 @@
     <color name="color_navigation_list_background">#4A4A4A</color>
     <color name="color_navigation_list_color">#fff</color>
 
-    <color name="colorPrimary">#8e44ad</color>
-    <color name="colorPrimaryDark">#663399</color>
-    <color name="colorAccent">#9b59b6</color>
+    <color name="colorPrimary">#02ac10</color>
+    <color name="colorPrimaryDark">#33994e</color>
+    <color name="colorAccent">#59b66d</color>
     <color name="colorBg">#ffffff</color>
     <color name="colorListConversation">#bdbdbd</color>
     <color name="colorChatHint">#777777</color>
     <color name="unread">#2ecc71</color>
 
-    <color name="colorRoundPhoto">#9b59b6</color>
+    <color name="colorRoundPhoto">#59b665</color>
     <color name="colorListConversationName">#2c3e50</color>
     <color name="colorListConversationMsg">#34495e</color>
 
