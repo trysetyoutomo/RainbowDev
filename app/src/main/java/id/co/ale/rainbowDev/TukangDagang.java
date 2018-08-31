@@ -63,6 +63,7 @@ public class TukangDagang extends AppCompatActivity {
         webView.getSettings().setGeolocationEnabled(true);
         webView.getSettings().setJavaScriptEnabled(true);
         webView.getSettings().setAllowFileAccess(true);
+        webView.getSettings().setGeolocationEnabled(true);
         webView.getSettings().setAllowContentAccess(true);
         webView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
 
@@ -70,18 +71,18 @@ public class TukangDagang extends AppCompatActivity {
         webView.loadUrl("file:///android_asset/www/main.html?id="+jid);
         webView.addJavascriptInterface(new WebInterface(this), "Android");
     }
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (event.getAction() == KeyEvent.ACTION_DOWN) {
-            switch (keyCode) {
-                case KeyEvent.KEYCODE_BACK:
-                    webInterface.loadUrl("javascript:cordova.fireDocumentEvent('backbutton');");
-                    return true;
-            }
-
-        }
-        return super.onKeyDown(keyCode, event);
-    }
+//    @Override
+//    public boolean onKeyDown(int keyCode, KeyEvent event) {
+//        if (event.getAction() == KeyEvent.ACTION_DOWN) {
+//            switch (keyCode) {
+//                case KeyEvent.KEYCODE_BACK:
+//                    webInterface.loadUrl("javascript:cordova.fireDocumentEvent('backbutton');");
+//                    return true;
+//            }
+//
+//        }
+//        return super.onKeyDown(keyCode, event);
+//    }
 
 
     // This is still required by Cordova
@@ -111,30 +112,6 @@ public class TukangDagang extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, intent);
         cordovaInterface.onActivityResult(requestCode, resultCode, intent);
     }
-
-    /**
-     * Called by the system when the user grants permissions!
-     *
-     * Note: The fragment gets priority over the activity, since the activity doesn't call
-     * into the parent onRequestPermissionResult, which is why there's no override.
-     *
-     * @param requestCode
-     * @param permissions
-     * @param grantResults
-     */
-//    public void onRequestPermissionsResult(int requestCode, String permissions[],
-//                                           int[] grantResults) {
-//        try
-//        {
-//            cordovaInterface.onRequestPermissionResult(requestCode, permissions, grantResults);
-//        }
-//        catch (JSONException e)
-//        {
-//            Log.d(TAG, "JSONException: Parameters fed into the method are not valid");
-//            e.printStackTrace();
-//        }
-//
-//    }
 
     public void startActivityForResult(CordovaPlugin cordovaPlugin, Intent intent, int i) {
 

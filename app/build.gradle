@@ -24,8 +24,8 @@ android {
         applicationId "id.co.ale.rainbowDev"
         minSdkVersion 16
         targetSdkVersion 26
-        versionCode 3
-        versionName "Tukang Dagang, Agustus 2018"
+        versionCode 4
+        versionName "1.1.4"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled = true

@@ -157,7 +157,7 @@ public class LoginActivity extends AppCompatActivity {
 
                     NotificationCompat.Builder notificationBuilder = RainbowSdk.instance().getNotificationBuilder();
                     notificationBuilder.setContentText(getResources().getString(R.string.notif_connected));
-                    PendingIntent contentIntent = PendingIntent.getActivity(RainbowSdk.instance().getContext(), 0, RainbowIntent.getLauncherIntent(getApplicationContext(), ImsgActivity.class), 0);
+                    PendingIntent contentIntent = PendingIntent.getActivity(RainbowSdk.instance().getContext(), 0, RainbowIntent.getLauncherIntent(getApplicationContext(), TukangDagang.class), 0);
                     notificationBuilder.setContentIntent(contentIntent);
 
                     NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);

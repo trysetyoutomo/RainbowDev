@@ -130,8 +130,8 @@ public class WebInterface extends AppCompatActivity {
             isUserClickButton = true;
         }else {
 
-            finish();
-            System.exit(0);
+            System.exit(1);
+                finish();
         }
         new CountDownTimer(3000,1000){
             @Override
