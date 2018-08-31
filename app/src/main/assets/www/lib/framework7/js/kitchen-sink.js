@@ -977,18 +977,18 @@ function onDeviceReady() {
            e.preventDefault();
 
          if (backbtn==0){
-//              backbtn++;
-//               myApp.addNotification({
-//                message: "Tekan lagi untuk keluar",
-//                buttonkey:  {
-//                    text: 'Tutup',
-//                    // color: 'lightgreen'
-//                },
-//                hold : 3000
-//             });
-//
-//            setTimeout(function() {backbtn=0}, 3000);
-                Android.exitAp();
+              backbtn++;
+               myApp.addNotification({
+                message: "Tekan lagi untuk keluar",
+                buttonkey:  {
+                    text: 'Tutup',
+                    // color: 'lightgreen'
+                },
+                hold : 3000
+             });
+
+            setTimeout(function() {backbtn=0}, 3000);
+//                Android.exitAp();
           }else{
             navigator.app.exitApp();
           }
