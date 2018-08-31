@@ -155,16 +155,16 @@ public class LoginActivity extends AppCompatActivity {
                         editor.commit();
                     }
 
-                    NotificationCompat.Builder notificationBuilder = RainbowSdk.instance().getNotificationBuilder();
-                    notificationBuilder.setContentText(getResources().getString(R.string.notif_connected));
-                    PendingIntent contentIntent = PendingIntent.getActivity(RainbowSdk.instance().getContext(), 0, RainbowIntent.getLauncherIntent(getApplicationContext(), ImsgActivity.class), 0);
-                    notificationBuilder.setContentIntent(contentIntent);
-
-                    NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-                    mNotificationManager.notify(RainbowService.EVENT_NOTIFICATION, notificationBuilder.build());
-//                    mNotificationManager.cancel(RainbowService.EVENT_NOTIFICATION);
-
-                    MessengerService.getInstance().startService();
+//                    NotificationCompat.Builder notificationBuilder = RainbowSdk.instance().getNotificationBuilder();
+//                    notificationBuilder.setContentText(getResources().getString(R.string.notif_connected));
+//                    PendingIntent contentIntent = PendingIntent.getActivity(RainbowSdk.instance().getContext(), 0, RainbowIntent.getLauncherIntent(getApplicationContext(), ImsgActivity.class), 0);
+//                    notificationBuilder.setContentIntent(contentIntent);
+//
+//                    NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+//                    mNotificationManager.notify(RainbowService.EVENT_NOTIFICATION, notificationBuilder.build());
+////                    mNotificationManager.cancel(RainbowService.EVENT_NOTIFICATION);
+//
+//                    MessengerService.getInstance().startService();
                 }
             });
 

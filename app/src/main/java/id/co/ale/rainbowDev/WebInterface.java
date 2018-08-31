@@ -16,6 +16,7 @@ import com.ale.infra.manager.IMMessage;
 import com.ale.infra.manager.fileserver.IFileProxy;
 import com.ale.infra.manager.fileserver.RainbowFileDescriptor;
 import com.ale.infra.proxy.conversation.IRainbowConversation;
+import com.ale.infra.proxy.room.IRoomProxy;
 import com.ale.infra.proxy.users.IUserProxy;
 import com.ale.infra.xmpp.xep.IMamNotification;
 import com.ale.listener.IRainbowContactsSearchListener;
@@ -36,6 +37,7 @@ import android.media.MediaPlayer;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.CountDownTimer;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -45,9 +47,12 @@ import android.widget.Toast;
 import com.ale.infra.contact.Contact;
 import com.ale.rainbowsdk.RainbowSdk;
 
+import org.json.JSONArray;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import id.co.ale.rainbowDev.Adapter.InstantMessagesAdapter;
 import id.co.ale.rainbowDev.Helpers.Util;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
@@ -60,6 +65,7 @@ public class WebInterface extends AppCompatActivity {
     Context mContext;
     public Contact contact;
     String cid ;
+    Conversation conversation;
     String jid = "eaa0dd9146164d23a2f739295c7ed7f1@openrainbow.com";
     WebInterface(Context c) {
         mContext = c;
@@ -157,45 +163,208 @@ public class WebInterface extends AppCompatActivity {
 
     @JavascriptInterface
     public void showChat(String jid2) {
-    try {
+        String msg = "123";
+        RainbowSdk.instance().contacts().searchByJid(jid2, new IRainbowContactsSearchListener() {
+            @Override
+            public void searchStarted() {}
 
+            @Override
+            public void searchFinished(List<IContact> list) {
+                if(list.size() > 0){
+                    try{
+                        RainbowSdk.instance().contacts().getUserDataFromId(list.get(0).getCorporateId(), new IUserProxy.IGetUserDataListener() {
+                            @Override
+                            public void onSuccess(final Contact contact) {
+                                Util.tempContact = contact;
+                                Intent intentCall = new Intent(mContext, ChatActivity.class);
+                                mContext.startActivity(intentCall);
 
-        IRainbowContact x = RainbowSdk.instance().contacts().getContactFromJabberId(jid2);
-        this.contact = (Contact) x;
-        Util.tempContact = this.contact;
+//                                try{
+//                                    RainbowSdk.instance().conversations().getConversationFromContact(contact.getImJabberId(), new IRainbowGetConversationListener() {
+//                                        @Override
+//                                        public void onGetConversationSuccess(final IRainbowConversation iRainbowConversation) {
+//
+//                                            if(iRainbowConversation.getMessages().getCount() == 0){
+//                                                Conversation c = new Conversation(contact);
+//                                                RainbowSdk.instance().im().sendMessageToConversation(c, "Helo  "+msg);
+//                                            }
+//                                        }
+//
+//                                        @Override
+//                                        public void onGetConversationError() {
+//
+//                                            Conversation c = new Conversation(contact);
+//                                            RainbowSdk.instance().im().sendMessageToConversation(c, "Helo  "+msg);
+//
+//                                        }
+//                                    });
+//                                    //            this.contact = (Contact) x;
+//                    IRainbowContact x = RainbowSdk.instance().contacts().getContactFromJabberId(jid2);
+//
+//                    Util.tempContact = contact;
+//                    Intent intentCall = new Intent(mContext, ChatActivity.class);
+//                    mContext.startActivity(intentCall);
+//
+//                                }catch (Exception ee){}
+                            }
 
-        Intent intentCall = new Intent(this.mContext, ChatActivity.class);
-        mContext.startActivity(intentCall);
-    }catch (Exception err){
-        Log.d("trysetyo", err.toString());
+                            @Override
+                            public void onFailure(RainbowServiceException e) {}
+                        });
+                    }catch (Exception e){}
+                }
+            }
+
+            @Override
+            public void searchError(RainbowServiceException e) {}
+        });
     }
-    }
-
     @JavascriptInterface
-     public void showTampil(String jid2) {
-        Log.d("nais1","ok");
-        //Intent i = new Intent(mContext, MainActivity.class);
-        //
-//        mContext.startActivity(i);
+    public void showTampil(String jid2) {
+        String msg = "123";
+        RainbowSdk.instance().contacts().searchByJid(jid2, new IRainbowContactsSearchListener() {
+            @Override
+            public void searchStarted() {}
+
+            @Override
+            public void searchFinished(List<IContact> list) {
+                if(list.size() > 0){
+                    try{
+                        RainbowSdk.instance().contacts().getUserDataFromId(list.get(0).getCorporateId(), new IUserProxy.IGetUserDataListener() {
+                            @Override
+                            public void onSuccess(final Contact contact) {
+//                                IRainbowContact x = RainbowSdk.instance().contacts().getContactFromJabberId(jid2);
+                                RainbowSdk.instance().webRTC().makeCall((Contact) contact, true);
+                                Intent intentCall = new Intent(mContext, VoiceCallActivity.class);
+                                mContext.startActivity(intentCall);
+
+                            }
+
+                            @Override
+                            public void onFailure(RainbowServiceException e) {}
+                        });
+                    }catch (Exception e){}
+                }
+            }
+
+            @Override
+            public void searchError(RainbowServiceException e) {}
+        });
+    }
 
 
 
-        IRainbowContact x = RainbowSdk.instance().contacts().getContactFromJabberId(jid2);
-//        Toasty.error(this.mContext,contact.toString());
-            this.contact = (Contact) x;
+//    try {
+//            IRainbowContact x = RainbowSdk.instance().contacts().getContactFromJabberId(jid2);
+//            this.contact = (Contact) x;
+//            Util.tempContact = this.contact;
+//            Intent intentCall = new Intent(this.mContext, ChatActivity.class);
+//            mContext.startActivity(intentCall);
+//        }catch (Exception err){
+//            Log.d("trysetyo", err.toString());
+//            Log.d("trysetyo", err.toString());
+//        }
 
 
-//        this.contact = (Contact) contacts.get(2);
-            //      if (this.contact!=null) {
-            String idd = RainbowSdk.instance().myProfile().getConnectedUser().getImJabberId();
-            Log.d("nais1", idd);
-            Log.d("nais1", this.contact.toString());
-            //com.ale.infra.contact.Contact@6
-        // f307b61
-            RainbowSdk.instance().webRTC().makeCall((Contact) this.contact, true);
-            // Log.d("nais", this.contact.toString());
-            Intent intentCall = new Intent(this.mContext, VoiceCallActivity.class);
-            mContext.startActivity(intentCall);
+
+//    @JavascriptInterface
+//     public void showTampil(String jid2) { /// melakukan telepon
+//        IRainbowContact x = RainbowSdk.instance().contacts().getContactFromJabberId(jid2);
+//        RainbowSdk.instance().webRTC().makeCall((Contact) x, true);
+//        Intent intentCall = new Intent(mContext, VoiceCallActivity.class);
+//        mContext.startActivity(intentCall);
+
+
+
+
+//        String myJid= RainbowSdk.instance().myProfile().getConnectedUser().getImJabberId();
+//                RainbowSdk.instance().contacts().searchByJid(jid2, new IRainbowContactsSearchListener() {
+//                    @Override
+//                    public void searchStarted() {}
+//
+//                    @Override
+//                    public void searchFinished(List<IContact> list) {
+//                        IContact contact = list.get(0);
+//
+//                        final ArrayList<String> s_contact = new ArrayList<String>();
+//                        s_contact.add(contact.getImJabberId());
+//                        s_contact.add(contact.getFirstName()+" "+contact.getLastName());
+//                        s_contact.add(RainbowSdk.instance().contacts().getAvatarUrl(contact.getCorporateId()));
+//
+//                        final JSONArray jsonArray = new JSONArray(s_contact);
+//
+//                        runOnUiThread(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                Log.d("try",jsonArray.toString());
+////                                Toast.makeText(mContext,"mantapppps",Toast.LENGTH_LONG).show();
+////                                IRainbowContact x = RainbowSdk.instance().contacts().getContactFromJabberId(jid2);
+////                                RainbowSdk.instance().webRTC().makeCall((Contact) x, true);
+////                                Intent intentCall = new Intent(mContext, VoiceCallActivity.class);
+////                                mContext.startActivity(intentCall);
+//
+//
+//
+////                            Util.log("set: "+"javascript:set_contact(\""+jsonArray.toString()+"\")");
+////                                webView.loadUrl("javascript:set_contact('"+jsonArray.toString()+"')");
+//                            }
+//                        });
+//                    }
+//
+//                    @Override
+//                    public void searchError(RainbowServiceException e) {}
+//                });
+//
+////        if (idd!=null){
+////        IRainbowContact x = RainbowSdk.instance().contacts().getContactFromJabberId(jid2);
+////        IRainbowContact c= RainbowSdk.instance().contacts().searchByJid(myJid);
+//
+////            Log.d("try", x.toString());
+////            Log.d("try", jid2);
+//
+////        }else{
+////            Toast.makeText(mContext,"idd null",Toast.LENGTH_LONG).show();
+////        }
+//        }catch (Exception e){
+//            Toast.makeText(mContext,e.toString(),Toast.LENGTH_LONG).show();
+//
+//
+//        }
+//
+//        RainbowSdk.instance().bubbles().addParticipantToBubble(Util.tempRoom, x, new IRoomProxy.IAddParticipantsListener() {
+//            @Override
+//            public void onAddParticipantsSuccess() {
+//
+//            }
+//
+//            @Override
+//            public void onMaxParticipantsReached() {
+//
+//            }
+//
+//            @Override
+//            public void onAddParticipantFailed(Contact contact) {
+//
+//            }
+//        });
+
+//            String idd = RainbowSdk.instance().myProfile().getConnectedUser().getImJabberId();
+//            IRainbowContact x = RainbowSdk.instance().contacts().getContactFromJabberId(jid2);
+//            if (x!=null){
+//                this.contact = (Contact) x;
+//
+//
+//                RainbowSdk.instance().webRTC().makeCall((Contact) this.contact, true);
+//                Intent intentCall = new Intent(this.mContext, VoiceCallActivity.class);
+//                mContext.startActivity(intentCall);
+//            }else{
+//
+////                Toasty(getBaseContext(),"asd").show();
+//            }
+//            Conversation c = new Conversation(this.contact);
+//            RainbowSdk.instance().im().sendMessageToConversation(c, "test");
+
+//    }
 
 
 
@@ -217,7 +386,6 @@ public class WebInterface extends AppCompatActivity {
 //        else{
 ///
 
-        }
 
 
 
