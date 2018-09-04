@@ -97,10 +97,10 @@ public class TukangDagang extends AppCompatActivity {
     public void onDestroy()
     {
         super.onDestroy();
-//        PluginManager pluginManager = webInterface.getPluginManager();
+        PluginManager pluginManager = webInterface.getPluginManager();
 //        if(pluginManager != null)
 //        {
-//            pluginManager.onDestroy();
+            pluginManager.onDestroy();
 //        }
 
     }

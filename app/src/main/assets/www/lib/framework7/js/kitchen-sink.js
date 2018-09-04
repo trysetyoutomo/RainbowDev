@@ -537,7 +537,7 @@ channel.bind('my-event', function(data) {
         // ]
 
      
-      var mp3URL = getMediaURL("sound/phone.mp3");
+      var mp3URL = getMediaURL("assets/www/sound/phone.mp3");
       var media = new Media(mp3URL, null, mediaError);
       media.setVolume(1.0);
       media.play();
@@ -2532,7 +2532,9 @@ $$(document).on('page:init', '.page[data-page="cekout"]', function (e) {
                 // jarak = jarak * 1 +"Kilo Meter"
                 jarak = jarak * 1 +" Kilo Meter"
             }
-            $$(".order-jarak").html(jarak);
+
+
+            $$(".order-jarak").html(numberWithCommas(jarak));
             $$(".order-jarak").attr("order-jarak-val",jarak_murni);
             $$(".order-jarak").attr("meter",meter);
             // alert(jarak);
@@ -4105,11 +4107,19 @@ $$(document).on('click', '.btn-refresh-order', function (e) {
   console.log(tabActive);
 });
 
+
 $$(document).on('page:init', '.page[data-page="order"]', function (e) {
+  // alert("clicked");
   var tabActive = $('.tabbar.pesanan a.tertunda').attr('href'); 
   getListOrder(window.localStorage.getItem("username"), tabActive);
   $$(".order-qty-notif").hide();
   $$(".order-qty-notif").html(0);
+  // setTimeout(function(e){
+  //    $(".toolbar-inner a").trigger("click");
+  //    alert("123");
+ 
+  // },200);
+   myApp.showTab('#tab-1');
 
 });
 
@@ -4123,6 +4133,7 @@ function getListOrder(username, tabActive){
       url : server+"/index.php?r=UkmPanggil/getListOrder",
       data : "username="+username,
       success : function(r){
+        // alert(r);
         var data = JSON.parse(r);
         var style="";
         
@@ -4140,28 +4151,31 @@ function getListOrder(username, tabActive){
           var idString = "";
           var medialist = "";
           var style_batal = "";
+          // alert(tabActive);
+          // alert(data.status);
+
           if (tabActive == '#tab-1') {
             if (data.status=="0"){
-              idString = "#order-pending";
+              idString = "order-pending";
               medialist = ".media-list1";
               style = "style='display:flex'";
               style_batal = "style='display:flex'";
             }
           } else if(tabActive == '#tab-2') {
             if (data.status=="1"){
-              idString = "#order-selesai";
+              idString = "order-selesai";
               style = "style='display:flex'";
               style_batal = "style='display:none'";
             }
           } else if(tabActive == '#tab-3') {
             if (data.status=="2"){
-              idString = "#order-batal";
+              idString = "order-batal";
               style = "style='display:none'";
               style_batal = "style='display:none'";
             }
           } else if(tabActive == '#tab-4') {
             if (data.status=="3"){
-              idString = "#order-proses";
+              idString = "order-proses";
               style = "style='display:flex'";
               style_batal = "style='display:none'";
             }
@@ -4205,7 +4219,9 @@ function getListOrder(username, tabActive){
           // media-list
           '</div>'+
           '</li>';
-          $$('.media-list ul'+idString).append(html);
+          // alert(idString);
+          // $$('.media-list ul'+idString).append(html);
+          $$('#'+idString).append(html);
         
         });
      
@@ -6394,7 +6410,7 @@ $$('#form-login').on('form:success', function (e) {
            // window.location.reload();
         }
 
-         $$(".btn-user-out").css("display","inline");
+         $$(".btn-user-out").css("display","block");
 
         // myApp.openPanel("right");
        // }else{
