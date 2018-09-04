@@ -78,7 +78,7 @@ public class PluginManager {
      * Init when loading a new HTML page into webview.
      */
     public void init() {
-        LOG.d(TAG, "init()");
+//        LOG.d(TAG, "init()");
         isInitialized = true;
         this.onPause(false);
         this.onDestroy();
@@ -121,7 +121,7 @@ public class PluginManager {
     public void exec(final String service, final String action, final String callbackId, final String rawArgs) {
         CordovaPlugin plugin = getPlugin(service);
         if (plugin == null) {
-            LOG.d(TAG, "exec() call to unknown plugin: " + service);
+//            LOG.d(TAG, "exec() call to unknown plugin: " + service);
             PluginResult cr = new PluginResult(PluginResult.Status.CLASS_NOT_FOUND_EXCEPTION);
             app.sendPluginResult(cr, callbackId);
             return;

@@ -369,6 +369,7 @@ var Logged_username;
 // pubnub2.subscribe({channels: [pnChannel2]});
 
 // appennd backgroun hujau
+
 $$(".navbar-inner").addClass("bg-green");
 
 function setLoginRainbow(jabberID)
@@ -387,34 +388,37 @@ function setLoginRainbow(jabberID)
 		success : function(r){
 
 			var  data = JSON.parse(r);
-			//alert(JSON.stringify(data));
-			window.localStorage.setItem("isfirstlogin", data.isfirstlogin);
-			window.localStorage.setItem("level", data.level);
-			window.localStorage.setItem("isLogged", 1);
-			window.localStorage.setItem("username", data.username);
-			// window.localStorage.setItem("pemilik", data.ukm.pemilik);
-//			window.localStorage.setItem("tanggal_akhir", data.ukm.tanggal_akhir);
-			window.localStorage.setItem("ukm_id", data.ukm.id);
-			window.localStorage.setItem("ukm_tipe", data.ukm.tipe);
-			window.localStorage.setItem("ukm_nama", data.ukm.nama);
-			window.localStorage.setItem("sisa", data.ukm.sisa);
-			window.localStorage.setItem("point", data.poin.poin);
-			window.localStorage.setItem("minimal", data.ukm.minimal);
-			window.localStorage.setItem("delivery", data.ukm.delivery);
-			var array_temp = [];
-			$$.each(data.kategori_favorite,function(i,v){
-				array_temp.push(v.jenis);
-			});
+      if (data.status==true){
+  			 alert(JSON.stringify(data));
+  			window.localStorage.setItem("isfirstlogin", data.isfirstlogin);
+  			window.localStorage.setItem("level", data.level);
+  			window.localStorage.setItem("isLogged", 1);
+//  			alert(data.username);
+  			window.localStorage.setItem("username", data.username);
+  			 window.localStorage.setItem("pemilik", data.ukm.pemilik);
+  			window.localStorage.setItem("tanggal_akhir", data.ukm.tanggal_akhir);
+  			window.localStorage.setItem("ukm_id", data.ukm.id);
+  			window.localStorage.setItem("ukm_tipe", data.ukm.tipe);
+  			window.localStorage.setItem("ukm_nama", data.ukm.nama);
+  			window.localStorage.setItem("sisa", data.ukm.sisa);
+  			window.localStorage.setItem("point", data.poin.poin);
+  			window.localStorage.setItem("minimal", data.ukm.minimal);
+  			window.localStorage.setItem("delivery", data.ukm.delivery);
+  			var array_temp = [];
+  			$$.each(data.kategori_favorite,function(i,v){
+  				array_temp.push(v.jenis);
+  			});
 
-			window.localStorage.setItem("kategori_favorite",JSON.stringify(array_temp));
+  			window.localStorage.setItem("kategori_favorite",JSON.stringify(array_temp));
 
-			var array_temp = [];
-			$$.each(data.td_favorite,function(i,v){
-			array_temp.push(v.ukm_id);
-			});
+  			var array_temp = [];
+  			$$.each(data.td_favorite,function(i,v){
+  			array_temp.push(v.ukm_id);
+  			});
 
-			window.localStorage.setItem("td_favorite",JSON.stringify(array_temp));
-			cekLevel();
+  			window.localStorage.setItem("td_favorite",JSON.stringify(array_temp));
+  			cekLevel();
+      }
 		}
 
 	});
@@ -1302,7 +1306,13 @@ $$(document).on('change','#Ukm_tipe', function (e) {
  $$(document).on('click', '.btn-tracking-ukm', function (e) {
    if (window.localStorage.getItem("isLogged")!="1"){
      $("#defaultReal").realperson();
-     Android.showLogin();
+     // Android.showLogin();
+     try{
+       Android.showLogin();
+     }catch(err){
+        // alert(err);
+        myApp.loginScreen();
+     }
      exit;
 
   }
@@ -1712,7 +1722,16 @@ function getPosition() {
 // $$(document).on('click', '#marker-choose span', function (e) {
 //   alert("mantap");
 // });
+// $$(document).on('click', '.dismissButton', function (e) {
+  // alert("123");
+  // console.log("123");
+// });
 $$(document).on('click', '.current-location', function (e) {
+    // alert("123");
+
+    // $$(".dismissButton").trigger("click");
+    // return;
+
    myApp.showIndicator();
   var options = {
       enableHighAccuracy: true,
@@ -2405,11 +2424,11 @@ function reloadSetting(ukm_id){
 $$(document).on("click","#li_button_peng_saya",function(e){
  // mainView.router.loadPage({url:'pengaturan.html', ignoreCache:true, reload:true })
   mainView.router.load({
-        url:"pengaturan.html"
-    });
- myApp.closePanel();
-  var ukm_id = window.localStorage.getItem("ukm_id");
-  reloadSetting(ukm_id);
+          url:"pengaturan.html"
+      });
+   myApp.closePanel();
+    var ukm_id = window.localStorage.getItem("ukm_id");
+    reloadSetting(ukm_id);
  
  
 });
@@ -2528,7 +2547,7 @@ $$(document).on('page:init', '.page[data-page="cekout"]', function (e) {
 $$(document).on("click",".btn-add-cart",function(e){
   if (window.localStorage.getItem("isLogged")!="1"){
       Android.showLogin();
-     exit;
+     return;
   }
     var id = $(this).attr("ukm_id");
     mainView.router.load({
@@ -3967,7 +3986,7 @@ getNewsSticker();
                   url_first = server+'/images/bast/'+v.gambar;
                 }
 
-                string = '<div class="swiper-slide" > '+
+                string = '<div class="swiper-slide" style="background:white!important" > '+
                 
                 '<div '+
                 'style="background-size:cover;height: 100%;width: 100%;margin-top: -17px;'+"background-image:url('"+server+'/images/bast/'+v.gambar+"')"+'"'+
@@ -4622,11 +4641,11 @@ $$(document).on('click','.btn-berita', function () {
     myApp.closePanel("right");
 }); 
 $$(document).on('click','.btn-user-out', function () {
+  try{
        $$.ajax({
             url : server+"/index.php?r=gis/logout",
             data :"username="+window.localStorage.getItem("username"),
             success : function(r){
-            Android.logoutRainbow();
                 var data = JSON.parse(r);
                 if (data.success){
                       window.localStorage.removeItem("isLogged");
@@ -4652,6 +4671,12 @@ $$(document).on('click','.btn-user-out', function () {
                             hold : 1000
                        });
                        $$(".btn-user-out").hide();
+                       try{
+                        Android.logoutRainbow();
+                       }catch(err){
+                        
+                       }
+  
                         //Android.logoutRainbow();
                       // setTimeout(function(e){                   
                       //  window.location.reload();
@@ -4666,8 +4691,10 @@ $$(document).on('click','.btn-user-out', function () {
   // alert("keluar");
   // keliling["08122178"].setMap(null);
 
-
+}catch(err){
+  alert(err);
   // myApp.
+}
 });
 
 
@@ -5061,11 +5088,11 @@ $$(document).on('page:init', '.page[data-page="filter-search"]', function (e) {
             ukm_id: v.id
         });
 
-        if (window.localStorage.getItem("level")==1  ){
+        // if (window.localStorage.getItem("level")==1  ){
              marker.setDraggable(true);
-        }else{
-             marker.setDraggable(false);
-        }
+        // }else{
+        //      marker.setDraggable(false);
+        // }
 
         var lat_bef = "";
         var lng_bef = "";
@@ -5089,7 +5116,7 @@ $$(document).on('page:init', '.page[data-page="filter-search"]', function (e) {
 
                   // alert(results[0].formatted_address);
                     // after success then ajax
-                      if (window.localStorage.getItem("level")==1 ) {
+                      // if (window.localStorage.getItem("level")==1 ) {
                       $$.ajax({
                         url : server+"/index.php?r=ukm/setlokasi",
                         data : "bef_lat="+lat_bef+"&bef_lng="+lng_bef+"&nama="+marker.title+"&lat="+e.latLng.lat()+"&lng="+e.latLng.lng()+"&alamat="+results[0].formatted_address+"&ukm_id="+ukm_id,
@@ -5104,7 +5131,7 @@ $$(document).on('page:init', '.page[data-page="filter-search"]', function (e) {
                         }
                       });
                       // end
-                      } 
+                      // } 
                       // alert(JSON.stringify(results));
                   });
                     
@@ -6827,8 +6854,12 @@ $$('#form-register').on('form:success', function (e) {
     }else{
       // alert("masuk 2");
       // if (window.localStorage.getItem("isRegistering")==true){
-       
+       try{
        Android.showLogin();
+       }catch(err){
+        // alert(err);
+        myApp.loginScreen();
+       }
        cekLoginVerified();
       // }
 
@@ -6922,7 +6953,7 @@ $$('#form-register').on('form:success', function (e) {
 
   });
   $$(document).on("click","#upload-link",function(e){
-    // e.preventDefault();
+    e.preventDefault();
     $("#defaultReal").realperson();
 
     $$("#label-add-umkm").html("Ajak Tukang Dagang");
@@ -6967,8 +6998,14 @@ $$('#form-register').on('form:success', function (e) {
 
     }else{
       // alert("masuk 2");
-       Android.showLogin();
        cekLoginVerified();
+       // Android.showLogin();
+       try{
+       Android.showLogin();
+       }catch(err){
+        // alert(err);
+        myApp.loginScreen();
+       }
     }
 
      // $$.ajax({
@@ -7559,9 +7596,12 @@ $$('#form-register').on('form:success', function (e) {
                 //   // $(".center").html
                 //   alert( "Latitude: "+event.latLng.lat()+" "+", longitude: "+event.latLng.lng() ); 
                 // });
-
+                  // alert($$("#map").html());
+                  // alert(map.getDiv());
+                  // console.log(map.getDiv());
 
                 $$('<div/>').addClass('centerMarker').appendTo(map.getDiv());
+
                 $$(document).on("click",".centerMarker",function(e){
                     clearMarkersCalon();
 

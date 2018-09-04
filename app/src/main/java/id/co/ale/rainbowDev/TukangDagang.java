@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.widget.Toast;
 
 import org.apache.cordova.ConfigXmlParser;
 import org.apache.cordova.CordovaInterfaceImpl;
@@ -34,6 +35,9 @@ public class TukangDagang extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        try{
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tukang_dagang);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -55,7 +59,7 @@ public class TukangDagang extends AppCompatActivity {
         }
 
 
-        Log.d("nais1",jid);
+//        Log.d("nais1",jid);
 
         SystemWebView webView = (SystemWebView) findViewById(R.id.tutorialView);
         webInterface = new CordovaWebViewImpl(new SystemWebViewEngine(webView));
@@ -70,6 +74,9 @@ public class TukangDagang extends AppCompatActivity {
         webView.loadUrl("javascript:initialize(" + jid+ ");");
         webView.loadUrl("file:///android_asset/www/main.html?id="+jid);
         webView.addJavascriptInterface(new WebInterface(this), "Android");
+        }catch (Exception err){
+            Toast.makeText(this.getBaseContext(),err.toString(),Toast.LENGTH_LONG).show();
+        }
     }
 //    @Override
 //    public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -85,16 +92,16 @@ public class TukangDagang extends AppCompatActivity {
 //    }
 
 
-    // This is still required by Cordova
+     //This is still required by Cordova
     @Override
     public void onDestroy()
     {
         super.onDestroy();
-        PluginManager pluginManager = webInterface.getPluginManager();
-        if(pluginManager != null)
-        {
-            pluginManager.onDestroy();
-        }
+//        PluginManager pluginManager = webInterface.getPluginManager();
+//        if(pluginManager != null)
+//        {
+//            pluginManager.onDestroy();
+//        }
 
     }
 

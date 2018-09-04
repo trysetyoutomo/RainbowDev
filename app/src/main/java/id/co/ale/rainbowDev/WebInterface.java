@@ -179,33 +179,6 @@ public class WebInterface extends AppCompatActivity {
                                 Intent intentCall = new Intent(mContext, ChatActivity.class);
                                 mContext.startActivity(intentCall);
 
-//                                try{
-//                                    RainbowSdk.instance().conversations().getConversationFromContact(contact.getImJabberId(), new IRainbowGetConversationListener() {
-//                                        @Override
-//                                        public void onGetConversationSuccess(final IRainbowConversation iRainbowConversation) {
-//
-//                                            if(iRainbowConversation.getMessages().getCount() == 0){
-//                                                Conversation c = new Conversation(contact);
-//                                                RainbowSdk.instance().im().sendMessageToConversation(c, "Helo  "+msg);
-//                                            }
-//                                        }
-//
-//                                        @Override
-//                                        public void onGetConversationError() {
-//
-//                                            Conversation c = new Conversation(contact);
-//                                            RainbowSdk.instance().im().sendMessageToConversation(c, "Helo  "+msg);
-//
-//                                        }
-//                                    });
-//                                    //            this.contact = (Contact) x;
-//                    IRainbowContact x = RainbowSdk.instance().contacts().getContactFromJabberId(jid2);
-//
-//                    Util.tempContact = contact;
-//                    Intent intentCall = new Intent(mContext, ChatActivity.class);
-//                    mContext.startActivity(intentCall);
-//
-//                                }catch (Exception ee){}
                             }
 
                             @Override

@@ -26,12 +26,15 @@
     <link rel="stylesheet" href="lib/framework7/css/material-icons.css">
     <!-- swipebox -->
     <!-- <link rel="stylesheet" href="lib/framework7/css/kitchen-sink.css"> -->
-    <link rel="icon" href="img/icon.png">
+    <!-- <link rel="icon" href="img/icon.png"> -->
     <link rel="stylesheet" href="css/fonta/css/font-awesome.min.css" type="text/css">
     <link rel="stylesheet" href="css/custom.css" type="text/css">
       <style>
   #tab1{
-  background:white;
+  background:white!important;
+  }
+  .buttons-ro a{
+    margin:5px;
   }
   </style>
   </head>
@@ -102,7 +105,7 @@
                     <div id="box-poin">
                         <div class="item-content wrapper-tracking">
                             <div class="item-inner">
-                            <div class="item-title label">Dapat Di Tracking ? </div>
+                            <div class="item-title label">Bagikan Lokasi ? </div>
                             <div class="item-input">
                             <label class="label-switch">
                                 <input type="checkbox" id="check-tracking2"  >
@@ -143,26 +146,79 @@
                       <div class="row">
                           <div class="col-100" style="padding:0 8px 8px 8px">
 
-                              <div class="buttons-ro w">
+                              <div class="buttons-ro w " style="padding:5px;">
                                 
                               <a style="color:white;" href="" class="button button-big button-fill button-raised bg-green  btn-riwayat-rekomendasi ">
                                   <i class="fa fa-history" aria-hidden="true"></i> Riwayat Ajakan
                               </a>
-                              <hr class="bg-orange" style="height:5px;margin-top:-2px">
+
+
+
+                              
+                              
                               <a style="color:white;padding:0 8px 8px 8px" href="" class="button button-big button-fill button-raised bg-green btn-tukar-poin">
                                   <i class="fa fa-clone" aria-hidden="true"></i> Tukar Poin
                               </a>
+                              
+
+
+                              <a href="#" id="li_button_ukmku" class=" button button-big button-fill button-raised bg-green ">
+                              <i class="fa fa-building-o "></i>
+                                Usahaku 
+                              </a>
+                              
+
+                            <a href="#" id="li_button_fav_saya" 
+                            class=" button button-big button-fill button-raised bg-green ">
+                            <i class="fa fa-star "></i>
+                            Favorit 
+                            </a>
+                              
+
+                    <!-- <div id="li_button_kat_fav" class="buttons-row" style="padding:0 8px 8px 8px"> -->
+                      <a href="tanya-favorite.html" class=" button button-big button-fill button-raised bg-green ">
+                      <i class="fa fa-star "></i>
+                        Kategori Favorit 
+
+                      </a>
+
+                              
+
+                      <a href="#" id="li_button_peng_saya" 
+                        class=" button button-big button-fill button-raised bg-green ">
+                        <i class="fa fa-gear "></i>
+                           Pengaturan 
+                      </a>
+                    
+                              
+                    <!-- </div> -->
+
+                    <a href="#" id="li_button_verifikasi" 
+                     class=" btn-verifikasi button button-big button-fill button-raised bg-green ">
+                            <i class="fa fa-check "></i>
+                      Verifikasi  
+                    </a>
+                              
+
+
+
+
+                                        <a href="" class=" btn-user-out button button-big button-fill button-raised bg-green ">
+                     <i class="fa fa-sign-out" aria-hidden="true"></i> Keluar Akun </a>
+                              
+
+
+
                               </div>
 
 
-                              <hr class="bg-orange"  style="height:5px;margin-top:-2px">
                           </div>
                       </div>
                     </div>
                     </li>
 
 
-                    <li>
+                    <li style="display:none">
                       <a href="#" class="item-link item-content">
                         <div class="item-media">
                         <i class="fa fa-user "></i>
@@ -193,7 +249,7 @@
                         </div></a>
                       </li>
 
-                     <li><a href="#" class="item-link item-content">
+                     <li style="display:none"><a href="#" class="item-link item-content">
                         <div class="item-media">
                      <i class="material-icons md-36">accessibility</i>
 
@@ -207,7 +263,7 @@
                         </div></a>
                       </li>
 
-                      <li id="li_User_masaaktif">
+                      <li id="li_User_masaaktif" style="display: none;">
                       <a href="#" class="item-link item-content">
                         <div class="item-media">
                   <i class="material-icons">date_range</i>
@@ -229,14 +285,15 @@
                  
                   </ul>
 
+               <!--   
                    <div id="li_button_ukmku" class="buttons-row" style="padding:0 8px 8px 8px">
-                    <a href="#" class=" button button-big button-fill button-raised bg-orange ">
+                    <a href="#" class=" button button-big button-fill button-raised bg-green ">
                     <i class="fa fa-building-o "></i>
                       Usahaku 
                     </a>
                   </div>
-               <!--     <div  class="buttons-row" style="padding:0 8px 8px 8px">
-                    <a href="#" class=" btn-pengenalan button button-big button-fill button-raised bg-orange ">
+                 <div  class="buttons-row" style="padding:0 8px 8px 8px">
+                    <a href="#" class=" btn-pengenalan button button-big button-fill button-raised bg-green ">
                     <i class="fa fa-building-o "></i>
                       Pengenalan 
                     </a>
@@ -244,15 +301,15 @@
 
 <!-- 
                    <div id="li_button_panggilan" class="buttons-row" style="padding:0 8px 8px 8px">
-                    <a href="#" class=" button button-big button-fill button-raised bg-orange ">
+                    <a href="#" class=" button button-big button-fill button-raised bg-green ">
                     <i class="fa fa-phone "></i>
                       Panggilan 
                     </a>
-                  </div> -->
+                  </div> 
 
                     <div id="li_button_fav_saya" class="buttons-row" style="padding:0 8px 8px 8px">
                       <a href="#" 
-                        class=" button button-big button-fill button-raised bg-orange ">
+                        class=" button button-big button-fill button-raised bg-green ">
                       <i class="fa fa-star "></i>
                          Favorit 
                       </a>
@@ -260,22 +317,15 @@
 
                     <div id="li_button_kat_fav" class="buttons-row" style="padding:0 8px 8px 8px">
                       <a href="tanya-favorite.html" 
-                        class=" button button-big button-fill button-raised bg-orange ">
+                        class=" button button-big button-fill button-raised bg-green ">
                       <i class="fa fa-star "></i>
                         Kategori Favorit 
                       </a>
                     </div>
-
-                    <div id="li_button_peng_saya" class="buttons-row" style="padding:0 8px 8px 8px">
-                      <a href="#" 
-                        class=" button button-big button-fill button-raised bg-orange ">
-                      <i class="fa fa-gear "></i>
-                         Pengaturan 
-                      </a>
-                    </div>
+                -->
 
                   <div id="li_button_permintaan" class="buttons-row" style="padding:0 8px 8px 8px;display: none;">
-                    <a href="#" class=" button button-big button-fill button-raised bg-orange ">
+                    <a href="#" class=" button button-big button-fill button-raised bg-green ">
                     <i class="fa fa-sign-in "></i>
                       Permintaan Konfirmasi
 
@@ -287,7 +337,7 @@
                   <div class="buttons-row btn-add-umkm" style="padding:0 8px 8px 8px;display: none;">
                     <a href="#" id="karang-add-umkm"  
                      
-                      class=" button button-big button-fill button-raised bg-orange ">
+                      class=" button button-big button-fill button-raised bg-green ">
                     <i class="fa fa-plus "></i>
                       Tambah Pedagang  
 
@@ -298,7 +348,7 @@
                    <div class="buttons-row btn-data-umkm" style="padding:0 8px 8px 8px;display: none;">
                     <a href="#"  
                      
-                        class=" button button-big button-fill button-raised bg-orange ">
+                        class=" button button-big button-fill button-raised bg-green ">
                       <i class="fa fa-list "></i>
                         Daftar Pedagang  
 
@@ -309,7 +359,7 @@
                     <div class="buttons-row btn-dashboard-admin " style="padding:0 8px 8px 8px;display: none;">
                     <a href="#"  
                      
-                        class=" button button-big button-fill button-raised bg-orange ">
+                        class=" button button-big button-fill button-raised bg-green ">
                       <i class="fa fa-dashboard "></i>
                        DASHBOARD  
 
@@ -318,20 +368,11 @@
 
                   </div>
 
-                  <div id="li_button_verifikasi" class="buttons-row " style="padding:0 8px 8px 8px">
-                    <a href="#" 
-                     class=" btn-verifikasi button button-big button-fill button-raised bg-orange ">
-                            <i class="fa fa-check "></i>
-                      Verifikasi  
-                    </a>
-
-
-
-                  </div>
+                 
                 <!--   <p id="li_button_rekomendasi" class="buttons-row " style="padding:0 8px 8px 8px">
                     <a href="#" s
                      
-                      class=" button button-big button-fill button-raised bg-orange ">
+                      class=" button button-big button-fill button-raised bg-green ">
                    <i class="fa fa-comment"></i>
                       Rekomendasikan UMKM  
 
@@ -342,14 +383,14 @@
 
 
                   <div class="buttons-row" style="padding:0 8px 8px 8px;display: none;">
-                    <a href="" class=" btn-berita button button-big button-fill button-raised bg-orange ">
+                    <a href="" class=" btn-berita button button-big button-fill button-raised bg-green ">
                      <i class="fa fa-newspaper-o" aria-hidden="true"></i> Berita UMKM </a>
                   </div>
-
+<!-- 
                   <div class="buttons-row" style="padding:0 8px 8px 8px">
-                    <a href="" class=" btn-user-out button button-big button-fill button-raised bg-orange ">
+                    <a href="" class=" btn-user-out button button-big button-fill button-raised bg-green ">
                      <i class="fa fa-sign-out" aria-hidden="true"></i> Keluar Akun </a>
-                  </div> 
+                  </div>  -->
               <!--     
                   -->
 
@@ -359,7 +400,7 @@
                   
                     <a 
 
-                    href="" class="btn-tutup-app  button button-big button-fill button-raised bg-orange ">
+                    href="" class="btn-tutup-app  button button-big button-fill button-raised bg-green ">
                      <i class="fa fa-power-off" aria-hidden="true"></i> Tutup </a>
                      </div> -->
                
@@ -391,7 +432,7 @@
              </div>
           
             <div class="navbar bg-green">
-              <div class="navbar-inner">
+              <div class="navbar-inner" >
             
                 <div class="center">
                 <img src="img/warna.png" style="width: 30px;top: 10px;position: relative;">
@@ -513,7 +554,7 @@
 <!-- 
                   <a href="#tab-2" class="link"><i class="icon material-icons">today</i></a>
  -->
-                <a  href="#" class="link" id="upload-link">
+                <a  href="add-umkm.html" class="link" id="upload-link">
                  <i class="fa fa-upload fa-2x " aria-hidden="true"></i>
                    <label class="label-icon">Ajukan</label>
                   
@@ -616,11 +657,11 @@
 
 
 
-      <a href="#" onClick="intentTampil()" style="color:white" class="link button  button-round  bg-green">
+<!--       <a href="#" onClick="intentTampil()" style="color:white" class="link button  button-round  bg-green">
         <i class="fa fa-arrow-left "></i>
       Intent
     </a>
-  </div>
+ -->  </div>
 
 
 </div>

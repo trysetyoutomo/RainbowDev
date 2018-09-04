@@ -51,7 +51,7 @@ String doFindLatestInstalledBuildTools(String minBuildToolsVersion) {
     try {
         availableBuildToolsVersions = getAvailableBuildTools()
     } catch (e) {
-        println "An exception occurred while trying to find the Android build tools."
+//        /println "An exception occurred while trying to find the Android build tools."
         throw e
     }
     if (availableBuildToolsVersions.length > 0) {
