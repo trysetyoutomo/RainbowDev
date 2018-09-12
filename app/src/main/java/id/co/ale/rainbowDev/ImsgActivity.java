@@ -376,9 +376,9 @@ public class ImsgActivity extends AppCompatActivity
             case R.id.nav_invitation:
                 openInvitation();
                 break;
-            case R.id.nav_logout:
-                RainbowSdk.instance().connection().signout(signoutResponseListener);
-                break;
+//            case R.id.nav_logout:
+//                RainbowSdk.instance().connection().signout(signoutResponseListener);
+//                break;
             case R.id.nav_about:
                 openAbout();
                 break;

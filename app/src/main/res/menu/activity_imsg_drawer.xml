@@ -21,10 +21,10 @@
         android:icon="@drawable/ic_menu_about"
         android:title="@string/imsg_menu_about" />
 
-    <item
-        android:id="@+id/nav_logout"
-        android:icon="@drawable/ic_menu_logout"
-        android:title="@string/imsg_menu_logout" />
+    <!--<item-->
+        <!--android:id="@+id/nav_logout"-->
+        <!--android:icon="@drawable/ic_menu_logout"-->
+        <!--android:title="@string/imsg_menu_logout" />-->
 
 
 </menu>

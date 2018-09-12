@@ -67,12 +67,18 @@ public class MainActivity extends AppCompatActivity {
         finish();
     }
 
-    private StartResponseListener startResponseListener = new StartResponseListener() {
+        private StartResponseListener startResponseListener = new StartResponseListener() {
         @Override
         public void onStartSucceeded() {
-            SharedPreferences sp = getPreferences(Context.MODE_PRIVATE);
-
+//            SharedPreferences sp = getPreferences(Context.MODE_PRIVATE);
+            SharedPreferences sp = getBaseContext().getSharedPreferences("userdetails",MODE_PRIVATE);
+//            String username = sp.getString(Util.USERNAME_CODE,"");
+//            String password = sp.getString(Util.PASSWORD_CODE,"");
+//            Log.d("tomo","mantap :"+username);
+//            Log.d("tomo","mantap"+password);
             Util.AUTO_TRANSLATE = sp.getString("AUTO_TRANSLATE", "off");
+
+
 
             String username = sp.getString(Util.USERNAME_CODE,"");
             String password = sp.getString(Util.PASSWORD_CODE,"");

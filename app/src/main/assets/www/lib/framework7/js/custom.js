@@ -101,10 +101,10 @@ blink('.realtime-circle-on');
 
 $$(document).on('click', '.open-nama-umkm', function (e) {
     var ukm_id = window.localStorage.getItem("ukm_id");
-    myApp.prompt( 'Masukan Nama UMKM', [ 'Nama UMKM'],
+    myApp.prompt( 'Masukan Nama Usaha ', [ 'Nama Usaha'],
     function (value) {
       if (value == '') {
-        customAlert('Nama UMKM harap diisi', 'Peringatan');
+        customAlert('Nama Usaha harap diisi', 'Peringatan');
         // console.log("kosong");
       } else {
         // console.log("terisi");

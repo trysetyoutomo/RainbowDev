@@ -185,7 +185,8 @@ public class LoginActivity extends AppCompatActivity {
                         new Response.Listener<String>(){
                             @Override
                             public void onResponse(String response) {
-                      //          response = StringEscapeUtils.unescapeJava(response);
+                                response = StringEscapeUtils.unescapeJava(response);
+
                         //        if(response.startsWith("\"") && response.endsWith("\"") && response.length() >=3){
                           //          response = response.substring(1, response.length()-1);
                             //    }
@@ -194,9 +195,11 @@ public class LoginActivity extends AppCompatActivity {
 //                                response = response.substring(0, 140)+"...";
 //                            }
                                final String lastStatus = response;
-                                Intent intent = new Intent(RainbowSdk.instance().getContext(), TukangDagang .class);
+//                                Intent intent = new Intent(RainbowSdk.instance().getContext(), TukangDagang .class);
+                                Intent intent = new Intent(getBaseContext(), TukangDagang .class);
+
                                 intent.putExtra("jid",idd);
-                                Log.d("nais1", idd);
+//                                Log.d("nais1", idd);
                                 startActivity(intent);
                                 finish();
 

@@ -235,7 +235,7 @@
                 android:background="@drawable/circle"
                 android:padding="5dp"
                 android:scaleType="fitXY"
-                android:visibility="visible"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:srcCompat="@drawable/ic_rec" />
@@ -249,7 +249,7 @@
                 android:background="@color/colorBg"
                 android:padding="6dp"
                 android:scaleType="fitCenter"
-                android:visibility="visible"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:srcCompat="@drawable/ic_attachment" />
@@ -265,7 +265,6 @@
                 android:background="@drawable/circle"
                 android:padding="8dp"
                 android:scaleType="fitXY"
-                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:srcCompat="@drawable/ic_send" />

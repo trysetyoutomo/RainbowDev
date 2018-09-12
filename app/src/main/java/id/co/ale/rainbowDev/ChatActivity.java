@@ -993,14 +993,14 @@ public class ChatActivity extends AppCompatActivity {
 
         if(isRecordAllow){
             if(isAttach || inputChat.getText().length() > 0){
-                btnRecord.setVisibility(View.GONE);
+//                btnRecord.setVisibility(View.GONE);
                 btnSend.setVisibility(View.VISIBLE);
             }else{
                 btnSend.setVisibility(View.GONE);
-                btnRecord.setVisibility(View.VISIBLE);
+//                btnRecord.setVisibility(View.VISIBLE);
             }
         }else{
-            btnRecord.setVisibility(View.GONE);
+//            btnRecord.setVisibility(View.GONE);
             btnSend.setVisibility(View.VISIBLE);
         }
     }

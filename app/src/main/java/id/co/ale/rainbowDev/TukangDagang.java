@@ -2,7 +2,9 @@ package id.co.ale.rainbowDev;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -23,6 +25,7 @@ import org.json.JSONException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import id.co.ale.rainbowDev.Helpers.Util;
 import id.co.ale.rainbowDev.R;
 
 public class TukangDagang extends AppCompatActivity {
@@ -36,9 +39,17 @@ public class TukangDagang extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         try{
+            SharedPreferences sp = getBaseContext().getSharedPreferences("userdetails",MODE_PRIVATE);
+            String username = sp.getString(Util.USERNAME_CODE,"");
+            String password = sp.getString(Util.PASSWORD_CODE,"");
+            Log.d("tomo","mantap :"+username);
+            Log.d("tomo","mantap"+password);
 
 
-        super.onCreate(savedInstanceState);
+
+
+
+            super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tukang_dagang);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MY_PERMISSION_FINE_LOCATION);
@@ -98,10 +109,10 @@ public class TukangDagang extends AppCompatActivity {
     {
         super.onDestroy();
         PluginManager pluginManager = webInterface.getPluginManager();
-//        if(pluginManager != null)
-//        {
+        if(pluginManager != null)
+        {
             pluginManager.onDestroy();
-//        }
+        }
 
     }
 

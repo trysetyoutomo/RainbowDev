@@ -21,7 +21,9 @@ import com.ale.infra.proxy.users.IUserProxy;
 import com.ale.infra.xmpp.xep.IMamNotification;
 import com.ale.listener.IRainbowContactsSearchListener;
 import com.ale.listener.IRainbowGetConversationListener;
+import com.ale.listener.SigninResponseListener;
 import com.ale.listener.SignoutResponseListener;
+import com.ale.listener.StartResponseListener;
 import com.ale.rainbowsdk.RainbowSdk;
 import com.ale.service.RainbowService;
 import com.amulyakhare.textdrawable.TextDrawable;
@@ -37,6 +39,7 @@ import android.media.MediaPlayer;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.CountDownTimer;
+import android.preference.PreferenceManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -46,16 +49,27 @@ import android.widget.Toast;
 
 import com.ale.infra.contact.Contact;
 import com.ale.rainbowsdk.RainbowSdk;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.json.JSONArray;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import id.co.ale.rainbowDev.Adapter.InstantMessagesAdapter;
 import id.co.ale.rainbowDev.Helpers.Util;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
+import static com.ale.infra.capabilities.CapabilitiesMgr.LOG_TAG;
 
 /**
  * Created by Jib Ridwan on 2/24/2017.
@@ -65,11 +79,140 @@ public class WebInterface extends AppCompatActivity {
     Context mContext;
     public Contact contact;
     String cid ;
+
+    private String pUsername;
+    private String pPassword;
+    private String rUsername;
+    private String rPassword;
+    private String savedMail;
+    private String []listsavedMail;
+    public static final String mypreference = "mypref";
     Conversation conversation;
     String jid = "eaa0dd9146164d23a2f739295c7ed7f1@openrainbow.com";
     WebInterface(Context c) {
         mContext = c;
 
+    }
+
+
+
+
+    private void signinWithToken(String email,String password) {
+//        Log.d("tomo", email);
+//        Log.d("tomo", password);
+       // RainbowSdk.instance().connection().signinWithToken(token, "https://openrainbow.com",new SigninResponseListener() {
+        RainbowSdk.instance().connection().signin(email,password,Util.RAINBOW_HOST,new SigninResponseListener() {
+
+            @Override
+            public void onSigninSucceeded() {
+//                Log.d("tomo", "sukses");
+//                Log.d("tomo", password);
+                try{
+
+                    SharedPreferences userDetails = mContext.getSharedPreferences("userdetails", MODE_PRIVATE);
+                    SharedPreferences.Editor edit = userDetails.edit();
+                    edit.putString(Util.USERNAME_CODE, email);
+                    edit.putString(Util.PASSWORD_CODE, password);
+                    edit.apply();
+                    Log.d("tomo", "masuk pa eko");
+
+                }catch (Exception err){
+                    Log.d("tomo","error pa eko "+err.toString());
+
+
+                }
+
+
+//                if (sharedpreferences.contains("email")) {
+////                    sharedpreferences.getString(Name, "");
+//                }
+//                if (sharedpreferences.contains("password")) {
+////                    email.setText(sharedpreferences.getString(Email, ""));
+//
+//                }
+
+
+//                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+//                SharedPreferences.Editor editor = prefs.edit();
+//                editor.putString("email_aja", email);
+//                editor.putString("password_aja", password);
+//                editor.commit();
+//                SharedPreferences sp = getPreferences(Context.MODE_PRIVATE);
+//                SharedPreferences.Editor editor = sp.edit();
+
+                //Log.d("tomo", "sukses login: ");
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        MessengerService.getInstance().startService();
+
+
+//                        if( ! ArrayUtils.contains(listsavedMail, email)){
+//                            SharedPreferences sp = getPreferences(Context.MODE_PRIVATE);
+//                            SharedPreferences.Editor editor = sp.edit();
+//
+//                            if(savedMail.length() == 0){
+//                                editor.putString("saved_mail", email);
+//                            }else{
+//                                editor.putString("saved_mail", savedMail+","+email);
+//                            }
+//                            editor.commit();
+//                        }
+
+//                        NotificationCompat.Builder notificationBuilder = RainbowSdk.instance().getNotificationBuilder();
+//                        notificationBuilder.setContentText(getResources().getString(R.string.notif_connected));
+//                        PendingIntent contentIntent = PendingIntent.getActivity(RainbowSdk.instance().getContext(), 0, RainbowIntent.getLauncherIntent(getApplicationContext(), TukangDagang.class), 0);
+//                        notificationBuilder.setContentIntent(contentIntent);
+//
+//                        NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+//                        mNotificationManager.notify(RainbowService.EVENT_NOTIFICATION, notificationBuilder.build());
+//                    mNotificationManager.cancel(RainbowService.EVENT_NOTIFICATION);
+
+
+                    }
+                });
+
+
+//
+//            setResult(RESULT_OK);
+
+
+
+            }
+
+            @Override
+            public void onRequestFailed(RainbowSdk.ErrorCode errorCode, String s) {
+                Util.log(errorCode.toString()+" "+s);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Log.d("tomo", s);
+                     //   Toasty.error(getBaseContext(), "Login fail").show();
+//                        showLoginForm();
+                    }
+                });
+            }
+//            @Override
+//            public void onSigninSucceeded() {
+//                if (!alreadyConnected) {
+//
+////                    Log.d("tomo", "onSigninSucceeded: ");
+//                    // Load normally on the thread UI
+//                } // else you may not need to do anything because you are already connected
+//            }
+//
+//            @Override
+//            public void onRequestFailed(RainbowSdk.ErrorCode errorCode, String err) {
+//                Log.d("tomo", err);
+//
+////                Log.getLogger().info(LOG_TAG, "onRequestFailed: signin failed " + err);
+//                if (errorCode == RainbowSdk.ErrorCode.TOKEN_MAXIMUM_RENEW_REACHED) {
+//                    String newToken = "The new token"; // Generate a new token
+//                    signinWithToken(newToken, true);
+//                } // else..
+//            }
+        });
     }
 
     SignoutResponseListener signoutResponseListener = new SignoutResponseListener() {
@@ -122,11 +265,31 @@ public class WebInterface extends AppCompatActivity {
 
 
     @JavascriptInterface
-    public void showLogin() {
+    public void signInByTOken(String email,String password) {
+//        Log.d("tomo", token);
+        RainbowSdk.instance().connection().start(new StartResponseListener() {
+            @Override
+            public void onStartSucceeded() {
+//                String yourFirstToken = token;
+                signinWithToken(email,password);
+            }
 
+            @Override
+            public void onRequestFailed(RainbowSdk.ErrorCode errorCode, String err) {
+                // Something was wrong
+                Log.d("tomo",err.toString());
+            }
+        });
+
+
+    }
+
+    @JavascriptInterface
+    public void showLogin(){
         Intent i = new Intent(mContext, MainActivity.class);
         mContext.startActivity(i);
     }
+
 
     boolean isUserClickButton = false;
     @JavascriptInterface

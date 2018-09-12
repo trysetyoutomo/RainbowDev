@@ -26,10 +26,11 @@ public class MessengerService extends Application {
         mInstance = this;
         RainbowSdk.instance().setNotificationBuilder(
                 getApplicationContext(),
-                MainActivity.class,
+                TukangDagang.class,
                 R.drawable.ic_notification,
                 getString(R.string.app_name),
-                getResources().getString(R.string.notif_connecting),
+                "Terhubung",
+//                getResources().getString("Terhubung"),
                 ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary)
         );
 

@@ -537,7 +537,7 @@ channel.bind('my-event', function(data) {
         // ]
 
      
-      var mp3URL = getMediaURL("assets/www/sound/phone.mp3");
+      var mp3URL = getMediaURL("sound/phone.mp3");
       var media = new Media(mp3URL, null, mediaError);
       media.setVolume(1.0);
       media.play();
@@ -927,7 +927,17 @@ function onOffline() {
 
 
 function onDeviceReady() {
+  // var a = new Date().toLocaleString();
+  // alert(a);
+      // alert(window.localStorage.getItem("is_tracking_start"));
+      // alert(window.localStorage.getItem("is_tracking_end"));
+         // document.write( dt );
 
+    setTimeout(function(e){
+        $$(".current-location").trigger("click");
+
+      // alert("123");
+    },7000);
     
     initMap();
     cekLevel();
@@ -944,8 +954,10 @@ function onDeviceReady() {
 
     if (window.localStorage.getItem("isLogged")=="1"){
          $$(".btn-user-out").show();
+         // alert("ok");
     }else{
          $$(".btn-user-out").hide();
+         // alert("ok 2");
     }
  
 
@@ -1150,15 +1162,19 @@ function onDeviceReady() {
 
 
  // $$(document).on('click', '.btn-panggil-login', function (e) {
- //     Android.showLogin();
+ //     myApp.loginScreen();
  //    $("#defaultReal").realperson();
  // });
  // $$(document).on('click', '.order-qty-notif', function (e) {
  // });
  $$(document).on('click', '.notification-panggilan', function (e) {
-    audio.pause();
-    audio.currentTime = 0;
-    $$(this).removeClass("blink_me");
+     if (window.localStorage.getItem("isLogged")!="1"){
+        myApp.loginScreen();
+      }else{
+        audio.pause();
+        audio.currentTime = 0;
+        $$(this).removeClass("blink_me");
+    }
  });
 
 
@@ -1277,16 +1293,92 @@ $$(document).on('page:init', '.page[data-page="edit-umkm"]', function (e) {
 
  $$(document).on('click', '#check-tracking', function (e) {
 
+
+
  var checked_tracking =window.localStorage.getItem("is_tracking");
-  if (checked_tracking=="true") {
+  if (checked_tracking=="true") {// lokasiku dapat dibagikan
     window.localStorage.setItem("is_tracking","false");
+    // alert("12")
   }else{
-    window.localStorage.setItem("is_tracking","true");
+    var nowTime = new Date();
+    
+
+    var buttons2 = [
+        {
+            text: 'Biarkan orang - orang melihat lokasi anda',
+            label: true,
+             onClick: function () {
+            //     // myApp.alert('Button1 clicked');
+            }
+        },
+        {
+            text: '10 Menit',
+             onClick: function () {
+                  // var newTime =  newTime.setMinutes(nowTime.getMinutes() + 10);
+                 window.localStorage.setItem("is_tracking","true");
+
+                var dt = new Date();
+                 window.localStorage.setItem("is_tracking_start",dt);
+                 dt.setMinutes( dt.getMinutes() + 1 );
+                 window.localStorage.setItem("is_tracking_end",dt);
+  
+                myApp.addNotification({
+                  message: "Lokasi Anda akan dibagikan selama 10 menit",
+                  buttonkey:  {
+                    text: 'Tutup',
+                  },
+                  hold : 2000
+               });   
+
+                // myApp.alert('Lokasi Anda akan dibagikan selama 10 menit');
+            }
+        },
+        {
+            text: '1 Jam',
+             onClick: function () {
+                  // var newTime =  nowTime.setMinutes(nowTime.getMinutes() + 60);
+                 window.localStorage.setItem("is_tracking","true");
+                var dt = new Date();
+                 window.localStorage.setItem("is_tracking_start",dt);
+                 dt.setMinutes( dt.getMinutes() + 60 );
+                 window.localStorage.setItem("is_tracking_end",dt);
+
+                   myApp.addNotification({
+                  message: "Lokasi Anda akan dibagikan selama 1 Jam",
+                  buttonkey:  {
+                    text: 'Tutup',
+                  },
+                  hold : 2000
+               });
+
+
+                // myApp.alert('Lokasi Anda akan dibagikan selama 1 jam');
+            }
+
+        }
+    ];
+    var buttons3 = [
+        {
+            text: 'Batal',
+            color: 'red',
+              onClick: function () {
+                 window.localStorage.setItem("is_tracking","false");
+                $("#check-tracking2").removeAttr("checked");
+                $("#check-tracking2").prop('checked', false);
+
+    
+           
+
+
+                // myApp.alert('Lokasi Anda akan dibagikan selama 1 jam');
+            }
+        }
+    ];
+    var groups = [ buttons2, buttons3];
+    myApp.actions(groups);
+
+
   }  
-// setTimeout(function(){
-//   window.location.reload();
-// },1000);
-  // alert(window.localStorage.getItem("is_tracking"));
 
  });
 
@@ -1306,9 +1398,9 @@ $$(document).on('change','#Ukm_tipe', function (e) {
  $$(document).on('click', '.btn-tracking-ukm', function (e) {
    if (window.localStorage.getItem("isLogged")!="1"){
      $("#defaultReal").realperson();
-     // Android.showLogin();
+     // myApp.loginScreen();
      try{
-       Android.showLogin();
+       myApp.loginScreen();
      }catch(err){
         // alert(err);
         myApp.loginScreen();
@@ -1339,7 +1431,7 @@ $$(document).on('change','#Ukm_tipe', function (e) {
 
   if (window.localStorage.getItem("isLogged")!="1"){
      $("#defaultReal").realperson();
-     Android.showLogin();
+     myApp.loginScreen();
      exit;
 
   }
@@ -1756,6 +1848,7 @@ $$(document).on('click', '.current-location', function (e) {
       };
       // navigator.geolocation.clearWatch(watchID);
       map.setCenter(pos2);
+      map.setZoom(20);
       setMyMarker(pos2.lat,pos2.lng,map);
    };
 
@@ -2256,9 +2349,9 @@ function GetProdukByUMKM(id){
                     '<div class="item-title-row" style="background-image:url()">'+
                           '<div class="item-title" style="width: 150px; margin-top: 20px"> <span class="nama-item">'+v.nama+' </span><br> <span class="harga-item" angka="'+v.harga+'"> Rp.'+numberWithCommas(v.harga)+'</span></div>'+
                           '<div class="item-after'+' '+i+'" style="float:right; margin-top: 30px">'+
-                                '<i style="float:none;display:none; font-size: 1.5em" class="fa fa-minus-circle btn-min-qty"></i>&nbsp;'+
+                                '<i style="float:none;display:none;" class="fa fa-2x fa-minus-circle btn-min-qty"></i>&nbsp;'+
                                 '<input item_id="'+v.id+'" ukm_id="'+id+'" class="order-qty"  type="number" value="0" style="width:40px;border:0px solid gray;padding:5px 3px 16px 10px;display:inline-block" />'+
-                        '&nbsp;<i class="fa fa-plus-square btn-add-qty" style="font-size: 1.5em" ></i>'
+                        '&nbsp;<i class="fa fa-plus-square fa-2x btn-add-qty"  ></i>'
                   '</div>'+
                 '</div>'+
                 // '&nbsp;<i class="fa fa-minus-square fa-2x btn-min-qty" ></i>'
@@ -2548,7 +2641,7 @@ $$(document).on('page:init', '.page[data-page="cekout"]', function (e) {
 
 $$(document).on("click",".btn-add-cart",function(e){
   if (window.localStorage.getItem("isLogged")!="1"){
-      Android.showLogin();
+      myApp.loginScreen();
      return;
   }
     var id = $(this).attr("ukm_id");
@@ -2562,6 +2655,41 @@ $$(document).on("click",".btn-add-cart",function(e){
     myApp.closePanel();
  });
 
+function getLatestLocation(id){
+   $$.ajax({
+        url : server+"/index.php?r=gis/getLatestLocation",
+        data : "id="+id,
+        beforesend:function(bf){
+          myApp.showIndicator();
+        },
+        success : function(r){
+           if (mainView.activePage.name=="dashboard"){
+              mainView.router.back();
+           }
+  // alert(mainView.activePage.name);
+
+
+          // mainView.router.loadPage({url:'main.html', ignoreCache:true, reload:true });
+
+          myApp.hideIndicator();
+            var json = JSON.parse(r);
+            var data = json;;
+             var o = {
+              lat: data.lat,
+              lng: data.lon
+            };
+            // navigator.geolocation.clearWatch(watchID);
+            map.setZoom(18);
+            map.setCenter(new google.maps.LatLng(data.lat, data.lon));
+             myApp.closePanel();
+
+        },
+        error:function(e){
+          myApp.hideIndicator();
+
+        }
+    });
+}
 function cariById(id){
  
   var id_ukm = id;
@@ -2585,9 +2713,18 @@ function cariById(id){
               $$(".btn-add-cart").hide();
               $$(".btn-ganti-gambar").show();
               $$(".btn-tambah-penjual").css("display","flex");
+
+              $$(".UMKM_tel").css("display","none");
+              $$(".UMKM_sms").css("display","none");
+
              
             }else{
-              $$(".btn-add-cart").css("display","flex");
+
+              $$(".UMKM_tel").css("display","block");
+              $$(".UMKM_sms").css("display","block");
+
+
+              $$(".btn-add-cart").css("display","inline");
               $$(".btn-ganti-gambar").hide();
               $$(".btn-tambah-penjual").css("display","none");
              
@@ -2639,9 +2776,18 @@ function cariById(id){
 
             //$$(".UMKM_sms").attr("href","sms:62"+data.telepon.substring(1,100)+"?body= Tukang Dagang 2018 \n");
             // alert(data.gambar);
-            $$("#background-umkm").css("background-image","url('"+server+"/images/bast/"+data.gambar+"'");
+            var img =  "";
+            if (imageExists(server+"/images/bast/"+data.gambar+"'")){
+              img = server+"/images/bast/"+data.gambar+"'";
+              mainImageUMKM = [server+"/images/bast/"+data.gambar];
+            }else{
+              img = "img/no_image.jpg";
+              mainImageUMKM = [img];
+            }
 
-            mainImageUMKM = [server+"/images/bast/"+data.gambar];
+            $$("#background-umkm").css("background-image","url("+img+")");
+
+
             // alert(mainImageUMKM);
             myPhotoBrowserStandalone = myApp.photoBrowser({
                 photos : mainImageUMKM
@@ -2776,7 +2922,7 @@ function cariById(id){
                }else{
                 img = "img/no_image.jpg";
                }
-               console
+               // console
                string = '<li class="hold-hapus-produk" data-tersedia="'+v.tersedia+'" p_id="'+v.id+'" data-keterangan="'+v.keterangan+'" data-harga="'+v.harga+'" data-id="'+v.id+'"  data-nama="'+v.nama+'" ukm_id="'+v.ukm_id+'" >'+
                 '<a href="#" class="item-link item-content">'+
                 '<div class="item-media"><img src="'+img+'" width="80"></div>'+
@@ -2913,7 +3059,7 @@ function onSuccess(imageURI) {
 
   $$(document).on('click', '.UMKM_tel', function (e) {
    if (window.localStorage.getItem("isLogged")!="1"){
-       Android.showLogin();
+       myApp.loginScreen();
      }else{
       var jid = $(this).attr("jabberID");
        Android.showTampil(jid);
@@ -2923,7 +3069,7 @@ function onSuccess(imageURI) {
 
   $$(document).on('click', '.UMKM_sms', function (e) {
    if (window.localStorage.getItem("isLogged")!="1"){
-       Android.showLogin();
+       myApp.loginScreen();
 
     }else{
       var jid = $(this).attr("jabberID");
@@ -3046,7 +3192,7 @@ function onSuccess(imageURI) {
   });
   $$(document).on('click', '.btn-favorite', function (e) {
     if (window.localStorage.getItem("username")==null || window.localStorage.getItem("username")=="" || window.localStorage.getItem("username")=="undefined" ){
-      Android.showLogin();
+      myApp.loginScreen();
       //  myApp.addNotification({
       //     message: "Silahkan Login terlebih dahulu",
       //     buttonkey:  {
@@ -3782,7 +3928,7 @@ $$(document).on('click', '.pending-acc', function (e) {
 
      var ukm_id = $$(this).attr("ukm-id");
   // myApp.confirm(' Menyetujui Permintaan Tukang Dagang ? ','Konfirmasi', function () {
-       myApp.prompt('Nomor telepon ', 'Konfirmasi',
+       myApp.prompt('Username ', 'Konfirmasi',
           function (value) {
             if (value!="" && value.length>5){
              tolakTerima(1,ukm_id,value,a);
@@ -3988,7 +4134,7 @@ getNewsSticker();
                   url_first = server+'/images/bast/'+v.gambar;
                 }
 
-                string = '<div class="swiper-slide" style="background:white!important" > '+
+                string = '<div  ukm-id="'+v.ukm_id+'"   class=" buka-detail-ukm swiper-slide" style="background:white!important" > '+
                 
                 '<div '+
                 'style="background-size:cover;height: 100%;width: 100%;margin-top: -17px;'+"background-image:url('"+server+'/images/bast/'+v.gambar+"')"+'"'+
@@ -4006,7 +4152,7 @@ getNewsSticker();
                 // '<i style="position: relative;top: 5px;color:#D85404;font-size:30px"  class="fa fa-google"></i>'+
                 // '</a>'+
                 '<a ukm-id="'+v.id+'"  href="tabs-swipeable.html?id='+v.ukm_id+'"   style="width:10%;background-color:transparent!important" class="  button button-big button-fill button-raised bg-orange">'+
-                '<i class="fa fa-info fa-2x" style="color:#D85404"></i> '+
+                // '<i class="fa fa-info fa-2x" style="color:#D85404"></i> '+
                 '</a>'+
                 '</p>'+
                 '</div></center>'+ 
@@ -4144,9 +4290,15 @@ function getListOrder(username, tabActive){
         
          $$.each(data,function(i,data){
           if (data.status=="2"){
-            if (window.localStorage.getItem("username")==data.cancel_by) s = "Di Batalkan Olehku ";
-            else s = "Di Batalkan Tukang Dagang ";
-          } else {  s = " "; }
+            if (window.localStorage.getItem("username")==data.cancel_by) 
+              s = "Di Batalkan Olehku ";
+            else if (data.cancel_by=="000"){
+              s = "Kadaluarsa ";
+            }
+            else 
+              s = "Di Batalkan Tukang Dagang ";
+          } 
+          else {  s = " "; }
 
           var idString = "";
           var medialist = "";
@@ -4189,7 +4341,7 @@ function getListOrder(username, tabActive){
           '<div class="item-title">'+data.nama+'</div>'+
           '<div class="item-after">'+moment(data.jam, "YYYY-MM-DD h:mm:ss").fromNow()+' </div>'+
           '</div>'+
-          '<div class="item-subtitle">'+data.alamat+'</div>'+
+          '<div class="item-subtitle"></div>'+
           '<div class="item-text" style="color:red">'+s+'</div>'+
           '</div>'+
           '</a>'+
@@ -4546,7 +4698,7 @@ function getListOrder(username, tabActive){
         data : "id="+id,
         success : function(r){
           var data = JSON.parse(r);
-          // alert(JSON.stringify(data.detail));
+          alert(JSON.stringify(data));
            $$.each(data.detail,function(i,v){
                 if (imageExists(server+"/images/product/"+v.id+".jpg")){
                 img = server+"/images/product/"+v.id+".jpg";
@@ -4563,7 +4715,7 @@ function getListOrder(username, tabActive){
                     '</div>'+
                      '<div class="item-text" style="width:80px">'+
                     '<i style="float:none;display:none" class="fa fa-plus-square fa-2x btn-add-qty"></i>&nbsp;'+
-                    '<input readonly item_id="'+v.item_id+'" ukm_id="'+v.ukm_id+'" class="order-qty-final"  type="text" value="'+v.qty+'" style="width:40px;border:1px solid gray;padding:5px;display:inline-block;float:right" />'+
+                    '<input readonly item_id="'+v.item_id+'" ukm_id="'+v.ukm_id+'" class="order-qty-final"  type="text" value="'+v.qty+'" style="width:40px;border:0px white gray;padding:5px;display:inline-block;float:right" />'+
                     '&nbsp;<i style="display:none" class="fa fa-minus-square fa-2x btn-min-qty" ></i>'
                      '</div>'+
                     '</div>'+
@@ -5104,11 +5256,11 @@ $$(document).on('page:init', '.page[data-page="filter-search"]', function (e) {
             ukm_id: v.id
         });
 
-        // if (window.localStorage.getItem("level")==1  ){
+        if (window.localStorage.getItem("level")==1  ){
              marker.setDraggable(true);
-        // }else{
-        //      marker.setDraggable(false);
-        // }
+        }else{
+             marker.setDraggable(false);
+        }
 
         var lat_bef = "";
         var lng_bef = "";
@@ -5190,8 +5342,17 @@ $$(document).on('page:init', '.page[data-page="filter-search"]', function (e) {
               return function() { 
                 // alert(this.tipe);
                 // var konten
-                infowindow.setContent(list);
-                infowindow.open(map, marker);   
+                // alert(v.id);
+                cariById(v.id);
+                 // getLatestLocation(id);
+                  mainView.router.load({
+                      url:"tabs-swipeable.html" 
+                  });
+                  $("#jRate").jRate();
+                  myApp.closePanel();
+
+                // infowindow.setContent(list);
+                // infowindow.open(map, marker);   
 
               }
            })(marker));
@@ -5613,6 +5774,8 @@ $$(document).on('click', '.btn-get-calon', function(e){
 
            // alert($$("#last_lat").val());
            // alert($$("#last_lng").val());
+           // $$(".UMKM_tel").attr("jabberID",data.jabberID);
+// 
            var list = "<table>"+
             "<tr><td colspan='2' style='text-align:center '>"+
             "<a style='color:black'  ukm-id='"+v.id+"' href='#' data-panel='right' class='open-detail'>"+v.nama_user+"</a>"+
@@ -5620,15 +5783,15 @@ $$(document).on('click', '.btn-get-calon', function(e){
             "<tr><td colspan='2'>"+
                 '<p class="buttons-row " style="padding:0 8px 8px 8px">'+
                 
-                '<a style="color:black" class="btn-lihat-pesanan link external" panggil_id="'+v.id+'" >'+
-                '<i  class="fa fa-list-ol fa-2x"></i> '+
+                // '<a style="color:black" class="btn-lihat-pesanan link external" panggil_id="'+v.id+'" >'+
+                // '<i  class="fa fa-list-ol fa-2x"></i> '+
+                // '</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+
+
+                '<a style="color:black" jabberID="'+v.jabberID+'" class="link external UMKM_tel">'+
+                '<i  class="fa fa-comments fa-2x"></i> '+
                 '</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+
 
-                '<a style="color:black" class="link external" href="sms:'+v.username+'">'+
-                '<i  class="fa fa-envelope fa-2x"></i> '+
-                '</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+
-
-                '<a style="color:black" class="link external" href="tel:'+v.username+'">'+
+                '<a style="color:black" jabberID="'+v.jabberID+'" class="link external" >'+
                 '<i  class="fa fa-phone fa-2x"></i> '+
                 '</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+
 
@@ -5681,7 +5844,15 @@ $$(document).on('click', '.btn-get-calon', function(e){
       // clearMarkersTetap();
       mainView.router.back();
     }else{
-      
+             myApp.addNotification({
+              message: "Tidak Terdapat Panggilan & Pesanan",
+              buttonkey:  {
+                  text: 'Tutup',
+              },
+              hold : 5000
+          });
+
+      // }     
     }
 });
 
@@ -5758,14 +5929,26 @@ $$(document).on('click', '.btn-tukar-poin', function(e){
    myApp.closePanel();
 });
 
+$$(document).on('click', '.buka-detail-ukm', function(e){
+   var id = $(this).attr("ukm-id");
+   cariById(id);
+   // getLatestLocation(id);
+    mainView.router.load({
+        url:"tabs-swipeable.html" 
+    });
+    $("#jRate").jRate();
+    myApp.closePanel();
+});
 $$(document).on('click', '.buka-ukm', function(e){
  var id = $$(this).attr("ukm_id");
-  mainView.router.load({
-      url:"tabs-swipeable.html" 
-  });
-  $("#jRate").jRate();
-  myApp.closePanel();
-  cariById(id);
+ getLatestLocation(id);
+  // mainView.router.load({
+  //     url:"tabs-swipeable.html" 
+  // });
+  // $("#jRate").jRate();
+  // myApp.closePanel();
+
+  // cariById(id);
 });
 $$(document).on('click', '.btn-riwayat-rekomendasi', function(e){
     $$.ajax({
@@ -5856,7 +6039,7 @@ function appendToList(result_marker){
   // ukm-id="'+v.id+'"  href="tabs-swipeable.html?id='+v.id+'"
         var data = '<li class="swipeout transitioning" '+color_row+'  >'+
         '<div class="swipeout-content"  >'+
-        '<a  class="item-link item-content buka-ukm"   ukm-id="'+v.id+'" ukm_id="'+v.id+'"  >'+
+        '<a  class="item-link item-content buka-ukm" lat-   ukm-id="'+v.id+'" ukm_id="'+v.id+'"  >'+
         '<div class="item-inner">'+
         '<div class="item-title-row">'+
         '<div class="item-title">'+v.nama+'</div>'+
@@ -5893,6 +6076,7 @@ var list_td_favoritku = [];
 var jml = 0; //jumlah ulang dikasih tau
 
 function refresMapLocation(lat,lng){
+  var username = window.localStorage.getItem("username"); 
   $$.ajax({
         url : server+"/index.php?r=gis/cari",
         data : "isnear=true&lat="+lat+"&lon="+lng+"&username="+username+"&tipe_hard=3",
@@ -5903,6 +6087,7 @@ function refresMapLocation(lat,lng){
         },
         success : function(r){
             myApp.hideIndicator();
+            // alert("ok");
             // clearMarkersKeliling();
             var data = JSON.parse(r);
             // alert(data);
@@ -6121,11 +6306,19 @@ function refreshUserData(){
 
   // update table user last kirim lokasi pedagang
    setInterval(function(e){ 
-    if ( window.localStorage.getItem("is_tracking")=="true"){
+    if ( window.localStorage.getItem("is_tracking")=="true"){ // jika nge bagikan lokasi maka
       if ( window.localStorage.getItem("isLogged")=="1"){
         if ( window.localStorage.getItem("ukm_tipe")=="3"){ 
             calon_pembeli_pos2 = calon_pembeli_pos;
-      
+
+            var mulai = new Date(window.localStorage.getItem("is_tracking_start"));
+            var akhir = new Date(window.localStorage.getItem("is_tracking_end"));
+            var now = new Date();
+            // alert(now.getTime()<=akhir.getTime());
+            console.log(now);
+            console.log(akhir);
+            if (now.getTime()<=akhir.getTime()){
+
 
             //start
               var options = {enableHighAccuracy: true,maximumAge: 3600000}
@@ -6176,11 +6369,20 @@ function refreshUserData(){
                }
 
 
+        }// jika skrang masih di bawah akhir 
+        else{ // jika tidak maka 
+              window.localStorage.setItem("is_tracking","false");// matikan bagikan lokasi
+            $("#check-tracking2").removeAttr("checked");
+            $("#check-tracking2").prop('checked', false);
+
+
+
         }
       }// end cek login
     }// end check tracking
 
 
+      }      
     
    },2500);
 
@@ -6370,6 +6572,7 @@ $$('#form-login').on('form:success', function (e) {
         // alert(data.isfirstlogin);
         // alert(data.ukm.id);
          // window.localStorage.setItem("isfirstlogin", data.isfirstlogin);
+         window.localStorage.setItem("token", data.token);
          window.localStorage.setItem("isfirstlogin", data.isfirstlogin);
          window.localStorage.setItem("level", data.level);
          window.localStorage.setItem("isLogged", 1);
@@ -6397,8 +6600,7 @@ $$('#form-login').on('form:success', function (e) {
 
          window.localStorage.setItem("td_favorite",JSON.stringify(array_temp));
          
-         cekLevel();
-          clearRegisterLogin();         
+
          
         myApp.closeModal('.login-screen');
         if (data.isfirstlogin==1){ 
@@ -6412,6 +6614,17 @@ $$('#form-login').on('form:success', function (e) {
 
          $$(".btn-user-out").css("display","block");
 
+         // alert(data.token);
+         try{
+         var u = $("#username").val();
+         var p = $("#password").val();
+
+          Android.signInByTOken(u,p);
+            cekLevel();
+                    clearRegisterLogin();
+         }catch(err){
+            alert(err);
+         }
         // myApp.openPanel("right");
        // }else{
          // myApp.addNotification({
@@ -6494,6 +6707,14 @@ $$('#form-verifikasi').on('form:success', function (e) {
   }
 });
 
+
+$$('.btn-chat').on('click', function (e) {
+ if (window.localStorage.getItem("isLogged")!="1"){
+    myApp.loginScreen();
+  }else{ 
+   Android.showLogin();
+  }
+});
 
 $$('#btn-change-phone').on('click', function (e) {
    // $$("#btn-change-phone").attr("phone",window.localStorage.getItem("RegisteringPhone"));
@@ -6580,13 +6801,15 @@ $$('#form-register').on('form:success', function (e) {
        
         myApp.showIndicator();
         var u = $$("#username2").val();
-        window.localStorage.setItem("isRegistering", true);
+        window.localStorage.setItem("isRegistering", false);
         // alert(u);
         window.localStorage.setItem("RegisteringPhone", u);
         clearRegisterLogin();
-        $$("#form-login").hide();
+        $$("#form-login").show();
         $$("#form-register").hide();
-        $$("#form-verifikasi").show();
+        $$(".label-login").html("Masuk");
+
+        // $$("#form-verifikasi").show();
 
 
         // $$("#verifikasi").val(data.number);
@@ -6697,7 +6920,7 @@ $$('#form-register').on('form:success', function (e) {
         if (!isNaN(window.localStorage.getItem("ukm_id")) ){   
              $$("#li_button_panggilan").show();
              $$(".wrapper-tracking").show();
-             $$(".notification-panggilan").show();
+             $$(".notification-panggilan").css("display","flex");
             // alert(lev);
         }
         // alert(window.localStorage.getItem("ukm_id"));
@@ -6712,7 +6935,7 @@ $$('#form-register').on('form:success', function (e) {
 
     var s = window.localStorage.getItem("sisa");
 
-    // alert(window.localStorage.getItem("level"));
+    // alert(window.localStorage.   getItem("level"));
 
     if (window.localStorage.getItem("level")==2){ //jika penjual
          // alert("masuk");
@@ -6871,7 +7094,7 @@ $$('#form-register').on('form:success', function (e) {
       // alert("masuk 2");
       // if (window.localStorage.getItem("isRegistering")==true){
        try{
-       Android.showLogin();
+       myApp.loginScreen();
        }catch(err){
         // alert(err);
         myApp.loginScreen();
@@ -7015,9 +7238,9 @@ $$('#form-register').on('form:success', function (e) {
     }else{
       // alert("masuk 2");
        cekLoginVerified();
-       // Android.showLogin();
+       // myApp.loginScreen();
        try{
-       Android.showLogin();
+       myApp.loginScreen();
        }catch(err){
         // alert(err);
         myApp.loginScreen();
@@ -7057,7 +7280,7 @@ $$('#form-register').on('form:success', function (e) {
 
      //          }else{
      //            // alert("masuk 2");
-     //             Android.showLogin();
+     //             myApp.loginScreen();
      //             cekLoginVerified();
      //          }
      //          // alert(lurah);
