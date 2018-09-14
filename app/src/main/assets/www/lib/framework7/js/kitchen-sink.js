@@ -4698,7 +4698,7 @@ function getListOrder(username, tabActive){
         data : "id="+id,
         success : function(r){
           var data = JSON.parse(r);
-          alert(JSON.stringify(data));
+//          alert(JSON.stringify(data));
            $$.each(data.detail,function(i,v){
                 if (imageExists(server+"/images/product/"+v.id+".jpg")){
                 img = server+"/images/product/"+v.id+".jpg";
