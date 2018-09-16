@@ -24,6 +24,7 @@ import com.ale.listener.IRainbowGetConversationListener;
 import com.ale.listener.SigninResponseListener;
 import com.ale.listener.SignoutResponseListener;
 import com.ale.listener.StartResponseListener;
+import com.ale.rainbowsdk.Connection;
 import com.ale.rainbowsdk.RainbowSdk;
 import com.ale.service.RainbowService;
 import com.amulyakhare.textdrawable.TextDrawable;
@@ -78,69 +79,90 @@ import static com.ale.infra.capabilities.CapabilitiesMgr.LOG_TAG;
 public class WebInterface extends AppCompatActivity {
     Context mContext;
     public Contact contact;
-    String cid ;
+    String cid;
 
     private String pUsername;
     private String pPassword;
     private String rUsername;
     private String rPassword;
     private String savedMail;
-    private String []listsavedMail;
+    public StartResponseListener a;
+    private String[] listsavedMail;
     public static final String mypreference = "mypref";
     Conversation conversation;
     String jid = "eaa0dd9146164d23a2f739295c7ed7f1@openrainbow.com";
+
     WebInterface(Context c) {
         mContext = c;
+        Connection connection = RainbowSdk.instance().connection();
+        if (connection.isConnected()) {
+            Log.d("tomos", "Connected");
+        } else {
+            Log.d("tomos", "Not Connected");
+
+            connection.start(this.startResponseListener);
+        }
+
 
     }
 
 
+//    private StartResponseListener startResponseListener = new StartResponseListener() {
+//        @Override
+//        public void onRequestFailed(RainbowSdk.ErrorCode errorCode, String s) {
+//
+//        }
+//
+//        @Override
+//        public void onStartSucceeded() {
+////            SharedPreferences sp = getPreferences(Context.MODE_PRIVATE);
+////            String username = sp.getString(Util.USERNAME_CODE,"");
+////            String password = sp.getString(Util.PASSWORD_CODE,"");
+////            Log.d("tomo","mantap :"+username);
+////            Log.d("tomo","mantap"+password);
+//
+//
+//            SharedPreferences sp = mContext.getSharedPreferences("userdetails", MODE_PRIVATE);
+//            Util.AUTO_TRANSLATE = sp.getString("AUTO_TRANSLATE", "off");
+//            String username = sp.getString(Util.USERNAME_CODE, "");
+//            String password = sp.getString(Util.PASSWORD_CODE, "");
+//            if (username.length() > 0 && password.length() > 0) {
+//                RainbowSdk.instance().connection().signin(username, password, "openrainbow.com", signinResponseListener
+//                );
+//            } else {
+////                showLogin();
+//            }
+//        }
+//    };
+//
 
 
-    private void signinWithToken(String email,String password) {
+    private void signinWithToken(String email, String password) {
 //        Log.d("tomo", email);
 //        Log.d("tomo", password);
-       // RainbowSdk.instance().connection().signinWithToken(token, "https://openrainbow.com",new SigninResponseListener() {
-        RainbowSdk.instance().connection().signin(email,password,Util.RAINBOW_HOST,new SigninResponseListener() {
+        // RainbowSdk.instance().connection().signinWithToken(token, "https://openrainbow.com",new SigninResponseListener() {
+        RainbowSdk.instance().connection().signin(email, password, Util.RAINBOW_HOST, new SigninResponseListener() {
 
             @Override
             public void onSigninSucceeded() {
 //                Log.d("tomo", "sukses");
 //                Log.d("tomo", password);
-                try{
+                try {
 
                     SharedPreferences userDetails = mContext.getSharedPreferences("userdetails", MODE_PRIVATE);
                     SharedPreferences.Editor edit = userDetails.edit();
                     edit.putString(Util.USERNAME_CODE, email);
                     edit.putString(Util.PASSWORD_CODE, password);
                     edit.apply();
-                    Log.d("tomo", "masuk pa eko");
+//                    Log.d("tomo", "masuk pa eko");
 
-                }catch (Exception err){
-                    Log.d("tomo","error pa eko "+err.toString());
+                } catch (Exception err) {
+//                    Log.d("tomo", "error pa eko " + err.toString());
 
 
                 }
 
 
-//                if (sharedpreferences.contains("email")) {
-////                    sharedpreferences.getString(Name, "");
-//                }
-//                if (sharedpreferences.contains("password")) {
-////                    email.setText(sharedpreferences.getString(Email, ""));
-//
-//                }
-
-
-//                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-//                SharedPreferences.Editor editor = prefs.edit();
-//                editor.putString("email_aja", email);
-//                editor.putString("password_aja", password);
-//                editor.commit();
-//                SharedPreferences sp = getPreferences(Context.MODE_PRIVATE);
-//                SharedPreferences.Editor editor = sp.edit();
-
-                //Log.d("tomo", "sukses login: ");
 
                 runOnUiThread(new Runnable() {
                     @Override
@@ -178,17 +200,16 @@ public class WebInterface extends AppCompatActivity {
 //            setResult(RESULT_OK);
 
 
-
             }
 
             @Override
             public void onRequestFailed(RainbowSdk.ErrorCode errorCode, String s) {
-                Util.log(errorCode.toString()+" "+s);
+                Util.log(errorCode.toString() + " " + s);
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         Log.d("tomo", s);
-                     //   Toasty.error(getBaseContext(), "Login fail").show();
+                        //   Toasty.error(getBaseContext(), "Login fail").show();
 //                        showLoginForm();
                     }
                 });
@@ -220,21 +241,21 @@ public class WebInterface extends AppCompatActivity {
         public void onSignoutSucceeded() {
 
 
-            try{
+            try {
 
 
-            MessengerService.getInstance().stopService();
+                MessengerService.getInstance().stopService();
 
-            SharedPreferences sp = getPreferences(Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = sp.edit();
-            Log.d("trysetyo",Util.USERNAME_CODE);
-            editor.remove(Util.USERNAME_CODE);
-            editor.remove(Util.PASSWORD_CODE);
-            editor.commit();
-            }catch (Exception err){
-                Log.d("trysetyo",err.toString());
-                Log.d("trysetyo",Util.USERNAME_CODE);
-                Log.d("trysetyo",Util.PASSWORD_CODE);
+                SharedPreferences sp = getPreferences(Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sp.edit();
+                Log.d("trysetyo", Util.USERNAME_CODE);
+                editor.remove(Util.USERNAME_CODE);
+                editor.remove(Util.PASSWORD_CODE);
+                editor.commit();
+            } catch (Exception err) {
+                Log.d("trysetyo", err.toString());
+                Log.d("trysetyo", Util.USERNAME_CODE);
+                Log.d("trysetyo", Util.PASSWORD_CODE);
             }
 
 
@@ -246,10 +267,10 @@ public class WebInterface extends AppCompatActivity {
 //            NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 //            mNotificationManager.notify(RainbowService.EVENT_NOTIFICATION, notificationBuilder.build());
 
-           // Intent intent = new Intent(getBaseContext(), TukangDagang.class);
+            // Intent intent = new Intent(getBaseContext(), TukangDagang.class);
 //            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-           // startActivity(intent);
-           // finish();
+            // startActivity(intent);
+            // finish();
         }
 
 //        @Override
@@ -265,19 +286,19 @@ public class WebInterface extends AppCompatActivity {
 
 
     @JavascriptInterface
-    public void signInByTOken(String email,String password) {
+    public void signInByTOken(String email, String password) {
 //        Log.d("tomo", token);
         RainbowSdk.instance().connection().start(new StartResponseListener() {
             @Override
             public void onStartSucceeded() {
 //                String yourFirstToken = token;
-                signinWithToken(email,password);
+                signinWithToken(email, password);
             }
 
             @Override
             public void onRequestFailed(RainbowSdk.ErrorCode errorCode, String err) {
                 // Something was wrong
-                Log.d("tomo",err.toString());
+                Log.d("tomo", err.toString());
             }
         });
 
@@ -285,24 +306,25 @@ public class WebInterface extends AppCompatActivity {
     }
 
     @JavascriptInterface
-    public void showLogin(){
+    public void showLogin() {
         Intent i = new Intent(mContext, MainActivity.class);
         mContext.startActivity(i);
     }
 
 
     boolean isUserClickButton = false;
+
     @JavascriptInterface
     public void exitAp() {
-        if(isUserClickButton==false){
-            Toast.makeText(mContext,"Jika menekan sekali lagi, app akan ditutup",Toast.LENGTH_LONG).show();
+        if (isUserClickButton == false) {
+            Toast.makeText(mContext, "Jika menekan sekali lagi, app akan ditutup", Toast.LENGTH_LONG).show();
             isUserClickButton = true;
-        }else {
+        } else {
 
             System.exit(1);
-                finish();
+            finish();
         }
-        new CountDownTimer(3000,1000){
+        new CountDownTimer(3000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
 
@@ -324,208 +346,167 @@ public class WebInterface extends AppCompatActivity {
 
     }
 
-    @JavascriptInterface
-    public void showChat(String jid2) {
-        String msg = "123";
-        RainbowSdk.instance().contacts().searchByJid(jid2, new IRainbowContactsSearchListener() {
+    private StartResponseListener startResponseListener = new StartResponseListener() {
+        @Override
+        public void onRequestFailed(RainbowSdk.ErrorCode errorCode, String s) {
+            Log.d("tomos", s.toString());
+        }
+
+        @Override
+        public void onStartSucceeded() {
+            Log.d("tomos","onStartSucceeded");
+
+            SharedPreferences sp = mContext.getSharedPreferences("userdetails", MODE_PRIVATE);
+            Util.AUTO_TRANSLATE = sp.getString("AUTO_TRANSLATE", "off");
+            String username = sp.getString(Util.USERNAME_CODE, "");
+            String password = sp.getString(Util.PASSWORD_CODE, "");
+            if (username.length() > 0 && password.length() > 0) {
+                RainbowSdk.instance().connection().signin(
+                        username, password, "openrainbow.com", signinResponseListener
+                );
+                Log.d("tomos", "lewat sini");
+//                MessengerService.getInstance().startService();
+
+            } else {
+                Log.d("tomos", "lewat sini 2");
+                showLogin();
+            }
+        }
+    };
+
+        public SigninResponseListener signinResponseListener = new SigninResponseListener() {
             @Override
-            public void searchStarted() {}
+            public void onSigninSucceeded() {
+                Log.d("tomos", "onSigninSucceeded");
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+//                    NotificationCompat.Builder notificationBuilder = RainbowSdk.instance().getNotificationBuilder();
+//                    notificationBuilder.setContentText(getResources().getString(R.string.notif_connected));
+//                    PendingIntent contentIntent = PendingIntent.getActivity(RainbowSdk.instance().getContext(), 0, RainbowIntent.getLauncherIntent(getApplicationContext(), TukangDagang.class), 0);
+//                    notificationBuilder.setContentIntent(contentIntent);
+//
+//                    NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+//                    mNotificationManager.notify(RainbowService.EVENT_NOTIFICATION, notificationBuilder.build());
+//                    mNotificationManager.cancel(RainbowService.EVENT_NOTIFICATION);
 
-            @Override
-            public void searchFinished(List<IContact> list) {
-                if(list.size() > 0){
-                    try{
-                        RainbowSdk.instance().contacts().getUserDataFromId(list.get(0).getCorporateId(), new IUserProxy.IGetUserDataListener() {
-                            @Override
-                            public void onSuccess(final Contact contact) {
-                                Util.tempContact = contact;
-                                Intent intentCall = new Intent(mContext, ChatActivity.class);
-                                mContext.startActivity(intentCall);
+                        MessengerService.getInstance().startService();
 
-                            }
+                        Log.d("tomos", "message starting");
+//                        showIM();
+//                        Log.d("tomos", "succes show IM");
+                    }
 
-                            @Override
-                            public void onFailure(RainbowServiceException e) {}
-                        });
-                    }catch (Exception e){}
-                }
+                });
+
+
             }
 
-            @Override
-            public void searchError(RainbowServiceException e) {}
-        });
-    }
-    @JavascriptInterface
-    public void showTampil(String jid2) {
-        String msg = "123";
-        RainbowSdk.instance().contacts().searchByJid(jid2, new IRainbowContactsSearchListener() {
-            @Override
-            public void searchStarted() {}
 
             @Override
-            public void searchFinished(List<IContact> list) {
-                if(list.size() > 0){
-                    try{
-                        RainbowSdk.instance().contacts().getUserDataFromId(list.get(0).getCorporateId(), new IUserProxy.IGetUserDataListener() {
-                            @Override
-                            public void onSuccess(final Contact contact) {
+            public void onRequestFailed(RainbowSdk.ErrorCode errorCode, String s) {
+                Log.d("tomos", "failed show IM");
+                //showFrontPage();
+            }
+        };
+
+    private void showIM(){
+        Intent intent = new Intent(mContext, ImsgActivity.class);
+        mContext.startActivity(intent);
+        finish();
+    }
+        @JavascriptInterface
+        public void showChat(String jid2) {
+            try {
+                String msg = "123";
+                RainbowSdk.instance().contacts().searchByJid(jid2, new IRainbowContactsSearchListener() {
+                    @Override
+                    public void searchStarted() {
+
+                    }
+
+                    @Override
+                    public void searchFinished(List<IContact> list) {
+                        if (list.size() > 0) {
+                            try {
+                                RainbowSdk.instance().contacts().getUserDataFromId(list.get(0).getCorporateId(), new IUserProxy.IGetUserDataListener() {
+                                    @Override
+                                    public void onSuccess(final Contact contact) {
+//                                        Util.tempContact = contact;
+//                                        Intent intent = new Intent(mContext, ChatActivity.class);
+//                                         mContext.startActivity(intent);
+//                                        finish();
+
+                                        Util.tempContact = contact;
+
+                                        Intent intentCall = new Intent(mContext, ChatActivity.class);
+                                        mContext.startActivity(intentCall);
+
+                                    }
+
+                                    @Override
+                                    public void onFailure(RainbowServiceException e) {
+                                    }
+                                });
+                            } catch (Exception e) {
+                                Log.d("tomos", e.toString());
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void searchError(RainbowServiceException e) {
+                    }
+                });
+
+
+            } catch (Exception err) {
+                Log.d("tomo", err.toString());
+            }
+        }
+
+        @JavascriptInterface
+        public void showTampil(String jid2) {
+            String msg = "123";
+            RainbowSdk.instance().contacts().searchByJid(jid2, new IRainbowContactsSearchListener() {
+                @Override
+                public void searchStarted() {
+                }
+
+                @Override
+                public void searchFinished(List<IContact> list) {
+                    if (list.size() > 0) {
+                        try {
+                            RainbowSdk.instance().contacts().getUserDataFromId(list.get(0).getCorporateId(), new IUserProxy.IGetUserDataListener() {
+                                @Override
+                                public void onSuccess(final Contact contact) {
 //                                IRainbowContact x = RainbowSdk.instance().contacts().getContactFromJabberId(jid2);
-                                RainbowSdk.instance().webRTC().makeCall((Contact) contact, true);
-                                Intent intentCall = new Intent(mContext, VoiceCallActivity.class);
-                                mContext.startActivity(intentCall);
+                                    RainbowSdk.instance().webRTC().makeCall((Contact) contact, true);
+                                    Intent intentCall = new Intent(mContext, VoiceCallActivity.class);
+                                    mContext.startActivity(intentCall);
 
-                            }
+                                }
 
-                            @Override
-                            public void onFailure(RainbowServiceException e) {}
-                        });
-                    }catch (Exception e){}
+                                @Override
+                                public void onFailure(RainbowServiceException e) {
+                                }
+                            });
+                        } catch (Exception e) {
+                        }
+                    }
                 }
-            }
 
-            @Override
-            public void searchError(RainbowServiceException e) {}
-        });
-    }
-
-
-
-//    try {
-//            IRainbowContact x = RainbowSdk.instance().contacts().getContactFromJabberId(jid2);
-//            this.contact = (Contact) x;
-//            Util.tempContact = this.contact;
-//            Intent intentCall = new Intent(this.mContext, ChatActivity.class);
-//            mContext.startActivity(intentCall);
-//        }catch (Exception err){
-//            Log.d("trysetyo", err.toString());
-//            Log.d("trysetyo", err.toString());
-//        }
-
-
-
-//    @JavascriptInterface
-//     public void showTampil(String jid2) { /// melakukan telepon
-//        IRainbowContact x = RainbowSdk.instance().contacts().getContactFromJabberId(jid2);
-//        RainbowSdk.instance().webRTC().makeCall((Contact) x, true);
-//        Intent intentCall = new Intent(mContext, VoiceCallActivity.class);
-//        mContext.startActivity(intentCall);
-
-
-
-
-//        String myJid= RainbowSdk.instance().myProfile().getConnectedUser().getImJabberId();
-//                RainbowSdk.instance().contacts().searchByJid(jid2, new IRainbowContactsSearchListener() {
-//                    @Override
-//                    public void searchStarted() {}
-//
-//                    @Override
-//                    public void searchFinished(List<IContact> list) {
-//                        IContact contact = list.get(0);
-//
-//                        final ArrayList<String> s_contact = new ArrayList<String>();
-//                        s_contact.add(contact.getImJabberId());
-//                        s_contact.add(contact.getFirstName()+" "+contact.getLastName());
-//                        s_contact.add(RainbowSdk.instance().contacts().getAvatarUrl(contact.getCorporateId()));
-//
-//                        final JSONArray jsonArray = new JSONArray(s_contact);
-//
-//                        runOnUiThread(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                Log.d("try",jsonArray.toString());
-////                                Toast.makeText(mContext,"mantapppps",Toast.LENGTH_LONG).show();
-////                                IRainbowContact x = RainbowSdk.instance().contacts().getContactFromJabberId(jid2);
-////                                RainbowSdk.instance().webRTC().makeCall((Contact) x, true);
-////                                Intent intentCall = new Intent(mContext, VoiceCallActivity.class);
-////                                mContext.startActivity(intentCall);
-//
-//
-//
-////                            Util.log("set: "+"javascript:set_contact(\""+jsonArray.toString()+"\")");
-////                                webView.loadUrl("javascript:set_contact('"+jsonArray.toString()+"')");
-//                            }
-//                        });
-//                    }
-//
-//                    @Override
-//                    public void searchError(RainbowServiceException e) {}
-//                });
-//
-////        if (idd!=null){
-////        IRainbowContact x = RainbowSdk.instance().contacts().getContactFromJabberId(jid2);
-////        IRainbowContact c= RainbowSdk.instance().contacts().searchByJid(myJid);
-//
-////            Log.d("try", x.toString());
-////            Log.d("try", jid2);
-//
-////        }else{
-////            Toast.makeText(mContext,"idd null",Toast.LENGTH_LONG).show();
-////        }
-//        }catch (Exception e){
-//            Toast.makeText(mContext,e.toString(),Toast.LENGTH_LONG).show();
-//
-//
-//        }
-//
-//        RainbowSdk.instance().bubbles().addParticipantToBubble(Util.tempRoom, x, new IRoomProxy.IAddParticipantsListener() {
-//            @Override
-//            public void onAddParticipantsSuccess() {
-//
-//            }
-//
-//            @Override
-//            public void onMaxParticipantsReached() {
-//
-//            }
-//
-//            @Override
-//            public void onAddParticipantFailed(Contact contact) {
-//
-//            }
-//        });
-
-//            String idd = RainbowSdk.instance().myProfile().getConnectedUser().getImJabberId();
-//            IRainbowContact x = RainbowSdk.instance().contacts().getContactFromJabberId(jid2);
-//            if (x!=null){
-//                this.contact = (Contact) x;
-//
-//
-//                RainbowSdk.instance().webRTC().makeCall((Contact) this.contact, true);
-//                Intent intentCall = new Intent(this.mContext, VoiceCallActivity.class);
-//                mContext.startActivity(intentCall);
-//            }else{
-//
-////                Toasty(getBaseContext(),"asd").show();
-//            }
-//            Conversation c = new Conversation(this.contact);
-//            RainbowSdk.instance().im().sendMessageToConversation(c, "test");
-
-//    }
-
-
-
-
-
-        //showLogin();
-
-//        contact.setLocalContact("583a2496");
-
-
-            //..      List<IRainbowContact> list = new ArrayList<IRainbowContact>();
-//        list.add(contact.)
-//contacts.get(2).getImJabberId();
-
-       // List<IRainbowContact> contacts = RainbowSdk.instance().contacts().getContactFromJabberId("33");
-//        Toasty.error(this.mContext,"ok");
-
-    //    }
-//        else{
-///
-
+                @Override
+                public void searchError(RainbowServiceException e) {
+                }
+            });
+        }
 
 
 
 
     }
+
+
 
 

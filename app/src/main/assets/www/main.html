@@ -73,7 +73,7 @@
                <div data-page="panel-right1" class="page">
                   <div class="navbar bg-green">
                      <div class="navbar-inner">
-                        <div class="center" id=""> <i class="fa fa-user"></i> 
+                        <div class="center" id="name-user"> <i class="fa fa-user"></i> 
                            Informasi Pengguna 
                         </div>
                         <!-- <i class="fa fa-times close-panel pull-right"></i> -->
@@ -123,30 +123,30 @@
                                     <div class="col-100" style="padding:0 8px 8px 8px">
                                        <div class="buttons-ro w " style="padding:5px;">
                                           <a style="color:white;" href="" class="button button-big button-fill button-raised bg-green  btn-riwayat-rekomendasi ">
-                                          <i class="fa fa-history" aria-hidden="true"></i> Riwayat Ajakan
+                                          <i class="fa fa-history" aria-hidden="true"></i> Riwayat Pengajuan
                                           </a>
                                           <a style="color:white;padding:0 8px 8px 8px" href="" class="button button-big button-fill button-raised bg-green btn-tukar-poin">
                                           <i class="fa fa-clone" aria-hidden="true"></i> Tukar Poin
                                           </a>
                                           <a href="#" id="li_button_ukmku" class=" button button-big button-fill button-raised bg-green ">
                                           <i class="fa fa-building-o "></i>
-                                          Usahaku 
+                                          Daganganku 
                                           </a>
-                                          <a href="#" id="li_button_fav_saya" 
-                                             class=" button button-big button-fill button-raised bg-green ">
-                                          <i class="fa fa-star "></i>
-                                          Favorit 
-                                          </a>
-                                          <!-- <div id="li_button_kat_fav" class="buttons-row" style="padding:0 8px 8px 8px"> -->
+                                          <a href="#" id="li_button_fav_saya"  class=" button button-big button-fill button-raised bg-green "><i class="fa fa-star "></i>Favorit </a>
+                                           <!-- <div id="li_button_kat_fav" class="buttons-row" >  -->
                                           <a href="tanya-favorite.html" class=" button button-big button-fill button-raised bg-green ">
                                           <i class="fa fa-star "></i>
                                           Kategori Favorit 
                                           </a>
+                                          <!--
+                                          -->
                                           <a href="#" id="li_button_peng_saya" 
                                              class=" button button-big button-fill button-raised bg-green ">
                                           <i class="fa fa-gear "></i>
                                           Pengaturan 
                                           </a>
+                                          <!-- 
+                                           -->
                                           <!-- </div> -->
                                           <a href="#" id="li_button_verifikasi" 
                                              class=" btn-verifikasi button button-big button-fill button-raised bg-green ">
@@ -559,9 +559,9 @@
                         </li>
                         <li class="item-content">
                            <div class="item-inner">
-                              <div class="item-title label">No Telepon (username)</div>
+                              <div class="item-title label">username</div>
                               <div class="item-input">
-                                 <input class="text-username" id="username2" type="text" name="username" placeholder="No Telepon">
+                                 <input class="text-username" id="username2" type="text" name="username" placeholder="Username">
                               </div>
                            </div>
                         </li>
@@ -748,11 +748,12 @@
       <link rel="stylesheet" type="text/css" href="js/realperson/jquery.realperson.css">
       <script type="text/javascript" src="js/realperson/jquery.plugin.js"></script> 
       <script type="text/javascript" src="js/realperson/jquery.realperson.js"></script>
-      <script async defer
-         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDvVmsCWrbljIzw3O0nYDa0WQjr7LSmtFY&language=ID&libraries=geometry"></script>
-      <!--
+ 
          <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD73yWW4Pc6t7IoSAY-kEk8FZklVFJiFe8&callback=initMap&language=ID&libraries=geometry"
          async defer></script>
+      <!--
+         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrn7oX563tQ7ONBdhdge8XfSK7gxAsXcM&callback=initMap" async defer></script>
+       <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD9bDz-3RKLBE_F6HY3obYaIS79J6JOjlA&callback=initMap" async defer></script>
          
          -->
       <!--
@@ -783,7 +784,7 @@
          }
          return(false);
          }
-         setLoginRainbow(getQueryVariable("id"));
+         // setLoginRainbow(getQueryVariable("id"));
          
          function showTest(idd) {
          //alert(idd);

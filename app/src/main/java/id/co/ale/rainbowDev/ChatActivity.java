@@ -176,14 +176,14 @@ public class ChatActivity extends AppCompatActivity {
 
         if(bundle != null){
             String contactJId = bundle.getString("CONTACT_JID");
-            Log.d("ContactJID",contactJId.toString());
+//            Log.d("ContactJID",contactJId.toString());
             this.contact = (Contact) RainbowSdk.instance().contacts().getContactFromJabberId(contactJId);
-            Log.d("nais","masuk 2");
+//            Log.d("nais","masuk 2");
 
         }else{
             this.contact = Util.tempContact;
-            Log.d("nais",this.contact.toString());
-            Log.d("nais","masuk 1");
+//            Log.d("nais",this.contact.toString());
+//            Log.d("nais","masuk 1");
 
 
         }
@@ -191,44 +191,45 @@ public class ChatActivity extends AppCompatActivity {
         this.contact.registerChangeListener(contactListener);
         updateContact();
 
-        Log.d("nais",this.contact.getContactId());
-        Log.d("nais",this.contact.getNickName());
+//        Log.d("nais",this.contact.getContactId());
+//        Log.d("nais",this.contact.getNickName());
 
 
 
         if(this.contact.getImJabberId() == null){
             this.conversation = new Conversation(this.contact);
             initConversation();
-            Log.d("nais","init conversatuion");
+            Log.d("tomos","init conversatuion");
 
         }else{
-            this.conversation = RainbowSdk.instance().conversations().getConversationFromContact(this.contact.getImJabberId(), getConversationListener);
-            Log.d("nais","not init conversatuion");
+           this.conversation = RainbowSdk.instance().conversations().getConversationFromContact(this.contact.getImJabberId(), getConversationListener);
+            Log.d("tomos","not init conversatuion");
 
         }
 
-        this.btnRecord.setOnTouchListener(recordTouchListener);
 
-        String [] perms = {"android.permission.WRITE_EXTERNAL_STORAGE", "android.permission.RECORD_AUDIO", "android.permission.READ_CONTACTS"};
+//        this.btnRecord.setOnTouchListener(recordTouchListener);
 
-        int permsRequestCode = 200;
-        ActivityCompat.requestPermissions(this,  perms, permsRequestCode);
-
-        this.previewLayout = (ConstraintLayout) findViewById(R.id.layout_preview);
-        this.prevFileName = (TextView) findViewById(R.id.prev_file_name);
-        this.prevFileCancelBtn = (ImageView) findViewById(R.id.prev_file_cancel);
-        this.prevImage = (ImageView) findViewById(R.id.prev_image);
-        this.prevFileSize = (TextView) findViewById(R.id.prev_file_size);
-
-        this.prevFileCancelBtn.setOnClickListener(cancelAttachListener);
-        this.prevImage.setOnClickListener(prevImageclick);
-
-        this.bgPrevLayout = (ConstraintLayout) findViewById(R.id.layout_bg_prev);
-
-        this.bgCancelBtn = (Button) findViewById(R.id.btn_cancel_bg);
-        this.bgSaveBtn = (Button) findViewById(R.id.btn_save_bg);
-        this.bgCancelBtn.setOnClickListener(cancelBg);
-        this.bgSaveBtn.setOnClickListener(saveBg);
+//        String [] perms = {"android.permission.WRITE_EXTERNAL_STORAGE", "android.permission.RECORD_AUDIO", "android.permission.READ_CONTACTS"};
+//
+//        int permsRequestCode = 200;
+//        ActivityCompat.requestPermissions(this,  perms, permsRequestCode);
+//
+//        this.previewLayout = (ConstraintLayout) findViewById(R.id.layout_preview);
+//        this.prevFileName = (TextView) findViewById(R.id.prev_file_name);
+//        this.prevFileCancelBtn = (ImageView) findViewById(R.id.prev_file_cancel);
+//        this.prevImage = (ImageView) findViewById(R.id.prev_image);
+//        this.prevFileSize = (TextView) findViewById(R.id.prev_file_size);
+//
+//        this.prevFileCancelBtn.setOnClickListener(cancelAttachListener);
+//        this.prevImage.setOnClickListener(prevImageclick);
+//
+//        this.bgPrevLayout = (ConstraintLayout) findViewById(R.id.layout_bg_prev);
+//
+//        this.bgCancelBtn = (Button) findViewById(R.id.btn_cancel_bg);
+//        this.bgSaveBtn = (Button) findViewById(R.id.btn_save_bg);
+//        this.bgCancelBtn.setOnClickListener(cancelBg);
+//        this.bgSaveBtn.setOnClickListener(saveBg);
 
 
     }

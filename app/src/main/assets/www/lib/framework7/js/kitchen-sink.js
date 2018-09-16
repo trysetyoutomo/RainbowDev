@@ -339,7 +339,7 @@ var rightView = myApp.addView('.view-right', {
 // $$(document).on('page:init', function (e) {
 //   // Page Data contains all required information about loaded and initialized page 
 //   var page = e.detail.page;
-//   alert(page);
+//   alert(page);i
 // });
 
 // == map 
@@ -1298,7 +1298,7 @@ $$(document).on('page:init', '.page[data-page="edit-umkm"]', function (e) {
  var checked_tracking =window.localStorage.getItem("is_tracking");
   if (checked_tracking=="true") {// lokasiku dapat dibagikan
     window.localStorage.setItem("is_tracking","false");
-    // alert("12")
+    disableShareLocation();
   }else{
     var nowTime = new Date();
     
@@ -1362,7 +1362,7 @@ $$(document).on('page:init', '.page[data-page="edit-umkm"]', function (e) {
             text: 'Batal',
             color: 'red',
               onClick: function () {
-                 window.localStorage.setItem("is_tracking","false");
+                 // window.localStorage.setItem("is_tracking","false");
                 $("#check-tracking2").removeAttr("checked");
                 $("#check-tracking2").prop('checked', false);
 
@@ -1609,6 +1609,31 @@ function deleteTukangDagang(ukm_id){
     });
 
 }
+function disableShareLocation(){
+   
+        $$.ajax({
+            url : server+"/index.php?r=Gis/disableShareLocation",
+            data : "username="+window.localStorage.getItem("username"),
+            success : function(r){
+            // alert(r);
+            var json = JSON.parse(r);
+            if (json.success==true){
+                // $$(".md-td[ukm_id='"+ukm_id+"']").remove();
+                myApp.addNotification({
+                    message: "Lokasi anda berhenti dibagikan",
+                    buttonkey:  {
+                        text: 'Tutup',
+                        // color: 'lightgreen'
+                      }
+                });
+            }else{
+                alert(r);
+            }
+
+            }
+        });
+
+}
 
 function getAllUMKM(){
    $$("#ul-umkm-list").html("");
@@ -1670,6 +1695,7 @@ $$(document).on('page:init', '.page[data-page="umkm-list"]', function (e) {
 
 //ajax tambah produk
  $$(document).on('page:init', '.page[data-page="add-produk"]', function (e) {
+     var img  =e.detail.page.query.image;
      var nama =e.detail.page.query.nama;
      var keterangan =e.detail.page.query.keterangan;
      var harga =e.detail.page.query.harga;
@@ -1694,11 +1720,11 @@ $$(document).on('page:init', '.page[data-page="umkm-list"]', function (e) {
      $$("#Produk_harga").val(harga);
      $$("#Produk_keterangan").val(keterangan);
 
-    if (imageExists(server+"/images/product/"+product_id+".jpg")){
-      img = server+"/images/product/"+product_id+".jpg";
-    }else{
-      img = "http://is.tnu.edu.vn/wp-content/themes/motive/images/no_image.jpg";
-    }
+    // if (imageExists(server+"/images/product/"+product_id+".jpg")){
+    //   img = server+"/images/product/"+product_id+".jpg";
+    // }else{
+    //   img = "http://is.tnu.edu.vn/wp-content/themes/motive/images/no_image.jpg";
+    // }
 
      $$("#Produk_gambar").attr("src",img);
     
@@ -1980,6 +2006,7 @@ $$(document).on('click', '.hold-edit', function (e) {
 });
 
 $$(document).on('click', '.hold-hapus-produk', function (e) {
+   var image = $$(this).attr("data-image");
    var ukm_id = $$(this).attr("ukm_id");
    var p_id = $$(this).attr("p_id");
    var nama = $$(this).attr("data-nama");
@@ -1991,6 +2018,7 @@ $$(document).on('click', '.hold-hapus-produk', function (e) {
        mainView.router.load({
         url:"tambah-produk.html",
         query:{
+          image: image,
           p_id: p_id,
           nama: nama,
           harga: harga,
@@ -2336,13 +2364,13 @@ function GetProdukByUMKM(id){
                   tersedia = "<b style='color:red'>Tidak Tersedia</b>";
                 }
 
-               if (imageExists(server+"/images/product/"+v.id+".jpg")){
-                img = server+"/images/product/"+v.id+".jpg";
+               if (imageExists(server+"/images/product/"+v.gambar)){
+                img = server+"/images/product/"+v.gambar;
                }else{
                 img = "img/no_image.jpg";
                }
 
-               string = '<li class="hold-hapus-produk-" data-tersedia="'+v.tersedia+'" p_id="'+v.id+'" data-keterangan="'+v.keterangan+'" data-harga="'+v.harga+'" data-id="'+v.id+'"  data-nama="'+v.nama+'" ukm_id="'+v.ukm_id+'" >'+
+               string = '<li class="hold-hapus-produk" data-image='+img+' data-tersedia="'+v.tersedia+'" p_id="'+v.id+'" data-keterangan="'+v.keterangan+'" data-harga="'+v.harga+'" data-id="'+v.id+'"  data-nama="'+v.nama+'" ukm_id="'+v.ukm_id+'" >'+
                 '<a href="#" class="item-link item-content">'+
                 '<div class="item-media"><img src="'+img+'" width="80"></div>'+
                 '<div class="item-inner">'+
@@ -2588,12 +2616,12 @@ $$(document).on('page:init', '.page[data-page="cekout"]', function (e) {
           $$.each(order,function(i,v){
             total_order+= parseInt(v.harga)*parseInt(v.qty);
 
-               if (imageExists(server+"/images/product/"+v.id+".jpg")){
-                img = server+"/images/product/"+v.id+".jpg";
+               if (imageExists(server+"/images/product/"+v.gambar)){
+                img = server+"/images/product/"+v.gambar;
                }else{
                 img = "img/no_image.jpg";
                }
-             string = '<li class="hold-hapus-produk-"  data-harga="'+v.harga+'" data-id="'+v.id+'"  data-nama="'+v.nama+'" ukm_id="'+v.ukm_id+'" >'+
+             string = '<li class="hold-hapus-produk" data-image='+img+'  data-harga="'+v.harga+'" data-id="'+v.id+'"  data-nama="'+v.nama+'" ukm_id="'+v.ukm_id+'" >'+
                     '<a href="#" class="item-link item-content">'+
                     '<div class="item-media"><img src="'+img+'" width="80"></div>'+
                     '<div class="item-inner">'+
@@ -2663,13 +2691,16 @@ function getLatestLocation(id){
           myApp.showIndicator();
         },
         success : function(r){
-           if (mainView.activePage.name=="dashboard"){
-              mainView.router.back();
-           }
+            // mainView.router.back();
+            
+           // if (mainView.activePage.name=="dashboard"){
+              // mainView.router.back();
+              // buka-detail-ukm
+          // mainView.router.loadPage({url:'main.html', ignoreCache:true, reload:true });
+           // }
   // alert(mainView.activePage.name);
 
 
-          // mainView.router.loadPage({url:'main.html', ignoreCache:true, reload:true });
 
           myApp.hideIndicator();
             var json = JSON.parse(r);
@@ -2679,7 +2710,7 @@ function getLatestLocation(id){
               lng: data.lon
             };
             // navigator.geolocation.clearWatch(watchID);
-            map.setZoom(18);
+            map.setZoom(23);
             map.setCenter(new google.maps.LatLng(data.lat, data.lon));
              myApp.closePanel();
 
@@ -2716,12 +2747,15 @@ function cariById(id){
 
               $$(".UMKM_tel").css("display","none");
               $$(".UMKM_sms").css("display","none");
+              $$(".UMKM_favorite").css("display","none");
 
              
             }else{
 
               $$(".UMKM_tel").css("display","block");
               $$(".UMKM_sms").css("display","block");
+              $$(".UMKM_favorite").css("display","block");
+              // $$(".fa fa-star  fa-2x").css("display","none");
 
 
               $$(".btn-add-cart").css("display","inline");
@@ -2746,6 +2780,8 @@ function cariById(id){
             // alert(JSON.stringify(data));
             $$(".UMKM_ulasan").html(rate.rate);
             $$(".btn-kirim-poin").attr("ukm_id",id);
+            $$(".UMKM_favorite").attr("ukm_id",id);
+            $$(".UMKM_favorite").attr("ukm-id",id);
             $$(".UMKM_nama").html(data.nama);
             $$("div data-page[rincian-umkm]").find(".navbar-inner .center").html("Informasi Tukang Dagang ("+data.nama+")");
 
@@ -2773,12 +2809,13 @@ function cariById(id){
             $$(".UMKM_wa").attr("href","https://api.whatsapp.com/send?phone=62"+data.telepon.substring(1,100));
             $$(".UMKM_bbm").attr("href","http://pin.bbm.com/"+data.telepon.substring(1,100));
             $$(".UMKM_sms").attr("jabberID",data.jabberID);
+            $$(".UMKM_marker").attr("ukm-id",id);
 
             //$$(".UMKM_sms").attr("href","sms:62"+data.telepon.substring(1,100)+"?body= Tukang Dagang 2018 \n");
             // alert(data.gambar);
             var img =  "";
-            if (imageExists(server+"/images/bast/"+data.gambar+"'")){
-              img = server+"/images/bast/"+data.gambar+"'";
+            if (imageExists(server+"/images/bast/"+data.gambar+"")){
+              img = server+"/images/bast/"+data.gambar+"";
               mainImageUMKM = [server+"/images/bast/"+data.gambar];
             }else{
               img = "img/no_image.jpg";
@@ -2917,13 +2954,13 @@ function cariById(id){
                   tersedia = "<b style='color:red'>Tidak Tersedia</b>";
                 }
 
-               if (imageExists(server+"/images/product/"+v.id+".jpg")){
-                img = server+"/images/product/"+v.id+".jpg";
+               if (imageExists(server+"/images/product/"+v.gambar)){
+                img = server+"/images/product/"+v.gambar;
                }else{
                 img = "img/no_image.jpg";
                }
                // console
-               string = '<li class="hold-hapus-produk" data-tersedia="'+v.tersedia+'" p_id="'+v.id+'" data-keterangan="'+v.keterangan+'" data-harga="'+v.harga+'" data-id="'+v.id+'"  data-nama="'+v.nama+'" ukm_id="'+v.ukm_id+'" >'+
+               string = '<li class="hold-hapus-produk" data-image='+img+' data-tersedia="'+v.tersedia+'" p_id="'+v.id+'" data-keterangan="'+v.keterangan+'" data-harga="'+v.harga+'" data-id="'+v.id+'"  data-nama="'+v.nama+'" ukm_id="'+v.ukm_id+'" >'+
                 '<a href="#" class="item-link item-content">'+
                 '<div class="item-media"><img src="'+img+'" width="80"></div>'+
                 '<div class="item-inner">'+
@@ -2957,7 +2994,7 @@ function cariById(id){
                 ke = v.keterangan;
               }
 
-             string = '<li class="hold-hapus-loker" data-nama="'+v.nama+'" data-keterangan="'+v.keterangan+'"  l_id="'+v.id+'" ukm_id="'+v.ukm_id+'"  >'+
+             string = '<li class="hold-hapus-loker"  data-nama="'+v.nama+'" data-keterangan="'+v.keterangan+'"  l_id="'+v.id+'" ukm_id="'+v.ukm_id+'"  >'+
                 '<a href="#" class="item-link item-content">'+
                   '<div class="item-inner">'+
                   '<div class="item-title-row" style="background-image:url()">'+
@@ -3057,22 +3094,42 @@ function onSuccess(imageURI) {
       $$("#Ukm_ganti_gambar").click();
   });
 
-  $$(document).on('click', '.UMKM_tel', function (e) {
+  $$(document).on('click', '.UMKM_tel,.call-rainbow', function (e) {
    if (window.localStorage.getItem("isLogged")!="1"){
        myApp.loginScreen();
      }else{
+      
+      // setTimeout(function(e){
+      //   myApp.showPreloader();
+      // },2000);
+        myApp.showPreloader();
+      setTimeout(function(e){
+        myApp.hidePreloader();
+      },3000);
+
+
       var jid = $(this).attr("jabberID");
        Android.showTampil(jid);
      }
    });
 
 
-  $$(document).on('click', '.UMKM_sms', function (e) {
+  $$(document).on('click', '.UMKM_sms,.chat-rainbow', function (e) {
    if (window.localStorage.getItem("isLogged")!="1"){
        myApp.loginScreen();
 
     }else{
+        // myApp.showPreloader();
       var jid = $(this).attr("jabberID");
+      //   setTimeout(function(e){
+      //   myApp.showPreloader();
+      // },2000);
+        myApp.showPreloader();
+      setTimeout(function(e){
+        myApp.hidePreloader();
+      },3000);
+
+
        Android.showChat(jid);
     }
    });
@@ -3244,7 +3301,7 @@ function onSuccess(imageURI) {
   });
 
 $$(document).on('page:init', '.page[data-page="add-umkm"]', function (e) {
-
+  $$("#Ukm_nama").focus();  
   var kel =e.detail.page.query.kel;
   var title =e.detail.page.query.title;
   // alert(kel);
@@ -3252,12 +3309,12 @@ $$(document).on('page:init', '.page[data-page="add-umkm"]', function (e) {
   getkategori(kel);
   var iskarang = e.detail.page.query.iskarang;
     // alert(iskarang)
-  if (iskarang==false){
-      $$("#Ukm_telepon").closest("li").hide();
-  }else{
-      $$("#Ukm_telepon").closest("li").show();
+  // if (iskarang==false){
+  //     $$("#Ukm_telepon").closest("li").hide();
+  // }else{
+  //     $$("#Ukm_telepon").closest("li").show();
 
-  }
+  // }
   // alert("123");
   // alert(iskarang);
   $$("#Ukm_iskarang").val(iskarang);
@@ -3280,6 +3337,13 @@ $$(document).on('page:init', '.page[data-page="add-umkm"]', function (e) {
             });
           });
       }else{
+        myApp.addNotification({
+              message: "Usaha Berhasil diajukan, pihak Tukang Dagang akan segera memproses usaha tersebut, Terimakasih",
+              buttonkey:  {
+                  text: 'Tutup',
+                  // color: 'lightgreen'
+                }
+          });
         mainView.router.back();
       }
 
@@ -3928,18 +3992,18 @@ $$(document).on('click', '.pending-acc', function (e) {
 
      var ukm_id = $$(this).attr("ukm-id");
   // myApp.confirm(' Menyetujui Permintaan Tukang Dagang ? ','Konfirmasi', function () {
-       myApp.prompt('Username ', 'Konfirmasi',
-          function (value) {
-            if (value!="" && value.length>5){
-             tolakTerima(1,ukm_id,value,a);
+       // myApp.prompt('Username ', 'Konfirmasi',
+       //    function (value) {
+       //      if (value!="" && value.length>5){
+             tolakTerima(1,ukm_id,"",a);
               // setTimeout(function(e){
               //   a.closest("li").remove();
               // },1000);
-            }
-            else
-              myApp.alert("Nomor Telepon Tidak Valid","Ups");
-          }
-        );
+          //   }
+          //   else
+          //     myApp.alert("Nomor Telepon Tidak Valid","Ups");
+          // }
+        // );
 
 });
 
@@ -4333,10 +4397,10 @@ function getListOrder(username, tabActive){
             }
           }
 
-          var html =  '<li  style="top: 0px;" class="btn-lihat-pesanan swipeout transitioning tr-calon"  panggil_id="'+data.id+'" >'+
+          var html =  '<li  style="top: 0px;" class=" swipeout transitioning tr-calon"  panggil_id="'+data.id+'" >'+
           '<div class="swipeout-content" style="">'+
-          '<a href="#" class="item-link item-content">'+
-          '<div class="item-inner">'+
+          '<a href="#" class="item-link item-content " >'+
+          '<div class="item-inner "  panggil_id="'+data.id+'">'+
           '<div class="item-title-row">'+
           '<div class="item-title">'+data.nama+'</div>'+
           '<div class="item-after">'+moment(data.jam, "YYYY-MM-DD h:mm:ss").fromNow()+' </div>'+
@@ -4346,7 +4410,7 @@ function getListOrder(username, tabActive){
           '</div>'+
           '</a>'+
           '</div>'+
-          '<div panggil_id="'+data.id+'" class=" btn-lihat-pesanan swipeout-actions-right " '+style+'>'+
+          '<div class="  swipeout-actions-right " '+style+'>'+
           // '<a ukm-id="'+data.id+'"   class="pending-acc demo-mark bg-green  " style="left: 0px;"><i class="fa fa-check" ></i></a>'+
           // '<a ukm-id="'+data.id+'"   class="pending-reject demo-mark bg-red  " style="left: 0px;"><i class="fa fa-times" ></i></a>'+
           // '<a ukm-id="'+data.id+'" href="tabs-swipeable.html?id='+data.id+'"    class="pending-info demo-mark bg-orange  " style="left: 0px;"><i class="fa fa-info" ></i></a>'+
@@ -4363,9 +4427,9 @@ function getListOrder(username, tabActive){
               '<a class="bg-blue external" href="sms:'+data.username+'" >'+
               '<i class="fa fa-envelope"></i>'+
               '</a>'+
-              '<a class="bg-green external" href="https://api.whatsapp.com/send?phone=62"+data.telepon.substring(1,100));"">'+
-              '<i class="fa fa-whatsapp"></i>'+
-            '</a>'+
+            //   '<a class="bg-green external" href="https://api.whatsapp.com/send?phone=62"+data.telepon.substring(1,100));"">'+
+            //   '<i class="fa fa-whatsapp"></i>'+
+            // '</a>'+
 
           // '<a href="http://maps.google.com/maps?saddr='+$$("#val-lat").val()+','+$$("#val-lon").val()+'&daddr='+data.lat+','+data.lon+'" lat="'+data.lat+'" class="link external bg-blue"  lon="'+data.lon+'" class="" style="left: 0px;"><i class="material-icons  md-24 ">directions</i> <i class="fa fa-google"></i></a>'+
           // media-list
@@ -4409,6 +4473,7 @@ function getListOrder(username, tabActive){
        var data = JSON.parse(r);
        calon_pembeli_pos = [];
         calon_pembeli_pos = data;
+        // alert(JSON.stringify(calon_pembeli_pos))
         // alert(calon_pembeli_pos);
          $$.each(calon_pembeli_pos,function(i,data){
           // alert(data);
@@ -4441,10 +4506,10 @@ function getListOrder(username, tabActive){
 
 
 
-          var html =  '<li wkwk  style="top: 0px;" class="btn-lihat-pesanan swipeout transitioning tr-calon"  panggil_id="'+data.id+'" >'+
+          var html =  '<li  style="top: 0px;" class=" swipeout transitioning tr-calon"   panggil_id="'+data.id+'" >'+
           '<div class="swipeout-content" style="">'+
           '<a href="#" class="item-link item-content">'+
-          '<div class="item-inner">'+
+          '<div class="item-inner btn-lihat-pesanan"  panggil_id="'+data.id+'">'+
           '<div class="item-title-row">'+
           '<div class="item-title" nomor='+data.username+'>'+data.nama_user+' </div>'+
           '<div class="item-after">'+moment(data.jam, "YYYY-MM-DD h:mm:ss").fromNow()+' </div>'+
@@ -4462,9 +4527,9 @@ function getListOrder(username, tabActive){
               // '<a class="bg-red" onClick="getDirection('+data.caller_lat+','+data.caller_lng+');" >'+
               // '<i class="material-icons  md-30">directions</i>'+
               // '</a>'+
-              '<a class="bg-gray external btn-lihat-pesanan" '+style+' panggil_id="'+data.id+'"  >'+
-              '<i class="fa fa-list-ol external"></i>'+
-              '</a>'+
+              // '<a class="bg-gray external btn-lihat-pesanan" '+style+' panggil_id="'+data.id+'"  >'+
+              // '<i class="fa fa-list-ol external"></i>'+
+              // '</a>'+
               '<a class="bg-red external btn-delete-calon" '+style+' panggil_id="'+data.id+'"  >'+
               '<i class="fa fa-times external"></i>'+
               '</a>'+
@@ -4474,15 +4539,17 @@ function getListOrder(username, tabActive){
                   '<a class="bg-green external btn-selesai-calon" '+style_done+' panggil_id="'+data.id+'"  >'+
               '<i class="fa fa-flag-checkered external"></i>'+
               '</a>'+
-              '<a class="bg-orange red" href="tel:'+data.username+'" >'+
+              // href="tel:'+data.username+'"
+              '<a jabberID='+data.jabberID+' class=" call-rainbow bg-orange red"  >'+
               '<i class="fa fa-phone external"></i>'+
               '</a>'+
-              '<a class="bg-blue external" href="sms:'+data.username+'" >'+
-              '<i class="fa fa-envelope"></i>'+
+              '<a jabberID='+data.jabberID+' class="chat-rainbow bg-blue external" >'+
+              '<i class="fa fa-commenting"></i>'+
+              // href="sms:'+data.username+'" 
               '</a>'+
-              '<a class="bg-green external" href="https://api.whatsapp.com/send?phone=62"+data.telepon.substring(1,100));"">'+
-              '<i class="fa fa-whatsapp"></i>'+
-                '</a>'+
+              // '<a class="bg-green external" href="https://api.whatsapp.com/send?phone=62"+data.telepon.substring(1,100));"">'+
+              // '<i class="fa fa-whatsapp"></i>'+
+              //   '</a>'+
 
           // '<a href="http://maps.google.com/maps?saddr='+$$("#val-lat").val()+','+$$("#val-lon").val()+'&daddr='+data.lat+','+data.lon+'" lat="'+data.lat+'" class="link external bg-blue"  lon="'+data.lon+'" class="" style="left: 0px;"><i class="material-icons  md-24 ">directions</i> <i class="fa fa-google"></i></a>'+
 
@@ -4698,14 +4765,14 @@ function getListOrder(username, tabActive){
         data : "id="+id,
         success : function(r){
           var data = JSON.parse(r);
-          alert(JSON.stringify(data));
+          // alert(JSON.stringify(data));
            $$.each(data.detail,function(i,v){
                 if (imageExists(server+"/images/product/"+v.id+".jpg")){
                 img = server+"/images/product/"+v.id+".jpg";
                }else{
                 img = "img/no_image.jpg";
                }
-             string = '<li class="hold-hapus-produk-"  data-harga="'+v.harga+'" data-id="'+v.id+'"  data-nama="'+v.nama+'" ukm_id="'+v.ukm_id+'" >'+
+             string = '<li class="hold-hapus-produk" data-image='+img+'  data-harga="'+v.harga+'" data-id="'+v.id+'"  data-nama="'+v.nama+'" ukm_id="'+v.ukm_id+'" >'+
                     '<a href="#" class="item-link item-content">'+
                     '<div class="item-media"><img src="'+img+'" width="80"></div>'+
                     '<div class="item-inner">'+
@@ -5814,8 +5881,18 @@ $$(document).on('click', '.btn-get-calon', function(e){
       var infowindow_keliling  = new google.maps.InfoWindow();
      google.maps.event.addListener(marker_calon, 'click', (function(marker_calon) {    
         return function() { 
-          infowindow_keliling.setContent(list);
-          infowindow_keliling.open(map, marker_calon);
+           mainView.router.load({
+          url:"view_order.html",
+          query:{
+            id: v.id
+          }    
+        });
+          // alert(JSON)
+          // mainView.router.load({
+          //   url:"view_order.html" 
+          // });
+          // infowindow_keliling.setContent(list);
+          // infowindow_keliling.open(map, marker_calon);
         }
      })(marker_calon));
 
@@ -5939,16 +6016,24 @@ $$(document).on('click', '.buka-detail-ukm', function(e){
     $("#jRate").jRate();
     myApp.closePanel();
 });
+
+
+$$(document).on('click', '.UMKM_marker', function(e){
+ var id = $$(this).attr("ukm-id");
+ getLatestLocation(id);
+ 
+
+});
 $$(document).on('click', '.buka-ukm', function(e){
  var id = $$(this).attr("ukm_id");
- getLatestLocation(id);
-  // mainView.router.load({
-  //     url:"tabs-swipeable.html" 
-  // });
+ // getLatestLocation(id);
+  mainView.router.load({
+      url:"tabs-swipeable.html" 
+  });
   // $("#jRate").jRate();
-  // myApp.closePanel();
+  myApp.closePanel();
 
-  // cariById(id);
+  cariById(id);
 });
 $$(document).on('click', '.btn-riwayat-rekomendasi', function(e){
     $$.ajax({
@@ -5963,7 +6048,7 @@ $$(document).on('click', '.btn-riwayat-rekomendasi', function(e){
           if (data.isaktif==1){
             st = "Diterima";
           }else if (data.isaktif==0){
-            st = "Tidak Aktif";
+            st = "Proses Verifikasi";
           }else if (data.isaktif==3){
             st = "Ditolak";
           }else{
@@ -6344,8 +6429,8 @@ function refreshUserData(){
                                     var m = d*1000;
                                     console.log(m);
                                     if (m<=30){ // jika jarak dibawah 15 meter maka
-                                        calon_pembeli_pos = [];
-                                        deleteCalonPembeli(v.username,v.ukm_id,v.id);
+                                        // calon_pembeli_pos = [];
+                                        // deleteCalonPembeli(v.username,v.ukm_id,v.id);
                                     } // end di bawah 20 meter
                                   }
                                 
@@ -6578,6 +6663,9 @@ $$('#form-login').on('form:success', function (e) {
          window.localStorage.setItem("isLogged", 1);
          window.localStorage.setItem("username", data.username);
          window.localStorage.setItem("pemilik", data.ukm.pemilik);
+         
+         $$("#name-user").html(data.nama_user);
+
          window.localStorage.setItem("tanggal_akhir", data.ukm.tanggal_akhir);
          window.localStorage.setItem("ukm_id", data.ukm.id);
          window.localStorage.setItem("ukm_tipe", data.ukm.tipe);
@@ -6709,9 +6797,21 @@ $$('#form-verifikasi').on('form:success', function (e) {
 
 
 $$('.btn-chat').on('click', function (e) {
+
  if (window.localStorage.getItem("isLogged")!="1"){
     myApp.loginScreen();
   }else{ 
+      // setTimeout(function(e){
+      // },2000);
+
+        myApp.showPreloader();
+      setTimeout(function(e){
+        myApp.hidePreloader();
+      },3000);
+
+
+      // myApp.showPreloader();
+
    Android.showLogin();
   }
 });
@@ -6805,11 +6905,11 @@ $$('#form-register').on('form:success', function (e) {
         // alert(u);
         window.localStorage.setItem("RegisteringPhone", u);
         clearRegisterLogin();
-        $$("#form-login").show();
+        // $$("#form-login").show();
         $$("#form-register").hide();
-        $$(".label-login").html("Masuk");
+        // $$(".label-login").html("Masuk");
 
-        // $$("#form-verifikasi").show();
+        $$("#form-verifikasi").show();
 
 
         // $$("#verifikasi").val(data.number);
@@ -7517,12 +7617,20 @@ $$('#form-register').on('form:success', function (e) {
         $$(document).on("click",".btn-check-favorite",function(e){
           var array = [];
           // alert("123");
-          console.log("btn check");
+          // console.log("btn check");
 
           $$(".check-nama").each(function(i,v){
             if ($$(this).is(':checked')){
               var value = $$(this).attr("value");
               array.push(value);
+            }
+
+            if (window.localStorage.getItem("isfirstlogin")=="1"){
+              window.location.reload();
+            }else{
+              $$(".back").trigger("click");
+                // mainView.router.back();
+
             }
 
           });

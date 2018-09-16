@@ -204,6 +204,7 @@ public class InstantMessagesAdapter extends ArrayAdapter<IMMessage> {
         }catch (Exception e){}
 
         String msg_content_edit = msg_content;
+
         for (String word : Util.blockedwords) {
             Pattern rx = Pattern.compile("\\b" + word + "\\b", Pattern.CASE_INSENSITIVE);
             msg_content_edit = rx.matcher(msg_content_edit).replaceAll(new String(new char[word.length()]).replace('\0', '*'));

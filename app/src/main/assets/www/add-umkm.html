@@ -30,7 +30,7 @@
     <div class="item-inner not-empty-state" style="float:left">
     <div class="item-title label">Nama Usaha</div>
     <div class="item-input item-input-field">
-    <input type="text"  placeholder="" name="Ukm[nama]" id="Ukm_nama" >
+    <input type="text"  placeholder="" name="Ukm[nama]" id="Ukm_nama" required="" >
     </div>
     </div>
   </div>
@@ -41,11 +41,22 @@
 <div class="item-inner not-empty-state" style="float:left">
 <div class="item-title label">Nama Pemilik</div>
 <div class="item-input item-input-field">
-<input type="text"  placeholder="" name="Ukm[pemilik]" id="Ukm_pemilik" >
+<input type="text"  placeholder="" name="Ukm[pemilik]" id="Ukm_pemilik" required="" >
 </div>
 </div>
 </div>
 </li>
+<!-- <li >
+<div class="item-content">
+<div class="item-media" style="width:40px"><i class="icon material-icons">person_outline</i></div>
+<div class="item-inner not-empty-state" style="float:left">
+<div class="item-title label">Nomor Telepon </div>
+<div class="item-input item-input-field">
+<input type="text"  placeholder="" name="Ukm[telepon]" id="Ukm_telepon" required >
+</div>
+</div>
+</div>
+</li> -->
 <li >
 <div class="item-content">
 <div class="item-media"><i class="material-icons">dehaze</i></div>
@@ -95,27 +106,39 @@
 <div class="item-inner">
 <div class="item-title label">Kategori Tukang Dagang</div>
 <div class="item-input item-input-field">
-<select required id="jenisusaha"  name="Ukm[kategori]" >
-<option>Pilih</option>
+<select required id="jenisusaha"  name="Ukm[kategori]"  >
+<option value="">Pilih</option>
 </select>
 </div>
 </div>
 </div>
 </li>
 
-<li>
+ <li>
 <div class="item-content">
 <div class="item-media"><i class="icon material-icons">call</i></div>
 <div class="item-inner">
-<div class="item-title label">Telepon (Username)</div>
+<div class="item-title label">Telepon</div>
 <div class="item-input item-input-field">
-<input type="tel" placeholder="" name="Ukm[telepon]" id="Ukm_telepon">
-<input type="hidden" placeholder="" name="rekomender" id="Ukm_rekomender">
+<input type="tel" placeholder="" name="Ukm[telepon]" id="Ukm_telepon" required="">
 </div>
 </div>
 </div>
 </li>
-
+ <li>
+<div class="item-content">
+<div class="item-media"><i class="icon material-icons">email</i></div>
+<div class="item-inner">
+<div class="item-title label">Email</div>
+<div class="item-input item-input-field">
+<input type="text" placeholder="" name="Ukm[email]" id="Ukm_email" required="">
+</div>
+</div>
+</div>
+</li>
+<!--
+ -->
+<input type="hidden" placeholder="" name="rekomender" id="Ukm_rekomender">
 <li class="align-top">
 <div class="item-content">
 <div class="item-media"><i class="icon material-icons">chat_bubble_outline</i></div>
@@ -214,7 +237,7 @@
      <i class="fa fa-camera"></i>   Ambil Gambar
   </p>
   </p>
-<input type="file" placeholder="" name="gambar" id="Ukm_gambar">
+<input type="file" placeholder="" name="gambar" id="Ukm_gambar" required="">
 <img id="myImage" style="width:100%;margin-top:10px;" />
 <!-- <img src="localhost:3000/my%20loc.png" id="myImage" style="width:100%;margin-top:10px;" /> -->
 </div>

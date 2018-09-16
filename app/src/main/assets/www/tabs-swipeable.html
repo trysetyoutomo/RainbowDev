@@ -63,7 +63,11 @@
       <!-- <span class="tabbar-label">GALERI</span>  -->
     <a onclick="$$('.rincian-top-label').html('Daftar Produk/Jasa')" href="#tab4" class="tab-link"><i class="fa fa-list-alt fa-2x"></i></a>
     <a onclick="$$('.rincian-top-label').html('Lowongan Kerja')" href="#tab5" class="tab-link"><i class="fa fa-suitcase fa-2x"></i></a>
-    <a onclick="$$('.rincian-top-label').html('Review')" href="#tab6" class="tab-link"> <i class="fa fa-star fa-2x"></i></a>
+     <a onclick="$$('.rincian-top-label').html('Review')" href="#tab6" class="tab-link">
+      <i class="fa fa-star fa-2x"></i>
+    </a> 
+    <!--
+   -->
     </div>
   </div>
   <div class="tabs-swipeable-wrap">
@@ -126,7 +130,7 @@
 
             </li>
 
-            <li><a href="#" class="item-link item-content">
+            <li style="display: none;"><a href="#" class="item-link item-content">
             <!-- <div class="item-media"><img src="http://lorempixel.com/160/160/people/2" width="80"></div> -->
             <div class="item-inner">
             <div class="item-title-row">
@@ -212,18 +216,20 @@
               </div></a>
             </li>
 
+              <!-- <div class="item-media"><img src="http://lorempixel.com/160/160/people/3" width="80"></div> -->
+ <!--
              <li style="display: none;">
               <a href="#" class="item-link item-content">
-              <!-- <div class="item-media"><img src="http://lorempixel.com/160/160/people/3" width="80"></div> -->
               <div class="item-inner">
               <div class="item-title-row">
               <div class="item-title">Ulasan</div>
               <div class="item-after"></div>
               </div>
-              <!-- <div class="item-subtitle">Michael Jackson</div> -->
               <div class="item-text "></div>
               </div></a>
             </li>
+          -->
+              <!-- <div class="item-subtitle">Michael Jackson</div> -->
 
 
               
@@ -266,6 +272,15 @@
               <a href="#" class="btn-add-cart link  button button-raisedound">
                 <i style="color:#D85404" class="fa fa-cart-plus  fa-2x"></i>
               </a>
+
+              <a href="#" class="UMKM_favorite btn-favorite link  button button-raisedound">
+                <i style="color:#D85404" class="fa fa-star  fa-2x"></i>
+              </a>
+<!--                 
+ --> 
+<a href="#" class="UMKM_marker  link  button button-raisedound">
+                <i style="color:#D85404" class="fa fa-map-marker  fa-2x"></i>
+              </a>
           </div>
 
         </div>
@@ -307,7 +322,6 @@
               </div>
           </div>
         </div>
-
          <div id="tab6" class="page-content tab">
           <div class="content-block">
           <div class="list-block media-list" style="margin-top:70px">
@@ -321,10 +335,10 @@
                 <div style="width: 300px;margin: 0 auto;" class="jRate" data-umkm=""></div>
 
               </li>
-              <li>
+              <li >
                 <h3><i class="fa fa-commenting"></i>&nbsp;Tulis Komentar</h3>
                 <hr>
-                <textarea id="text-komentar" placeholder="Tulis Komentarmu tentang Tukang Dagang ini" style="width: 100%;height: 60px;"></textarea>
+                <textarea id="text-komentar" placeholder="Tulis Komentarmu tentang Tukang Dagang ini" style="display: none;width: 100%;height: 60px;"></textarea>
                 <a style="color:white;" href="" class="button button-big button-fill button-raised bg-green  btn-kirim-komentar">
                     <i class="fa fa-send" aria-hidden="true"></i> Kirim
                 </a>
@@ -338,7 +352,8 @@
           </div>
           </div>
         </div>
-
+<!-- 
+ -->
 
       </div>
 
