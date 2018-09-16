@@ -4765,7 +4765,11 @@ function getListOrder(username, tabActive){
         data : "id="+id,
         success : function(r){
           var data = JSON.parse(r);
+<<<<<<< HEAD
           // alert(JSON.stringify(data));
+=======
+//          alert(JSON.stringify(data));
+>>>>>>> 6098d090c0f7c84bd369676a022575f4ee68c87e
            $$.each(data.detail,function(i,v){
                 if (imageExists(server+"/images/product/"+v.id+".jpg")){
                 img = server+"/images/product/"+v.id+".jpg";
