@@ -5,6 +5,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -36,55 +38,74 @@ public class TukangDagang extends AppCompatActivity {
     private final static int MY_PERMISSION_FINE_LOCATION = 101;
     private boolean permissionIsGranted = false;
 
+
+    private boolean isNetworkAvailable() {
+        return true;
+//        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+//        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+//        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         try{
-            SharedPreferences sp = getBaseContext().getSharedPreferences("userdetails",MODE_PRIVATE);
-            String username = sp.getString(Util.USERNAME_CODE,"");
-            String password = sp.getString(Util.PASSWORD_CODE,"");
-            Log.d("tomo","mantap :"+username);
-            Log.d("tomo","mantap"+password);
 
+            if (this.isNetworkAvailable()) {
+                SharedPreferences sp = getBaseContext().getSharedPreferences("userdetails", MODE_PRIVATE);
+                String username = sp.getString(Util.USERNAME_CODE, "");
+                String password = sp.getString(Util.PASSWORD_CODE, "");
+//                Log.d("tomo", "mantap :" + username);
+//                Log.d("tomo", "mantap" + password);
 
+//                "android.permission.CAMERA",
+//                        "android.permission.WRITE_EXTERNAL_STORAGE",
+//                        "android.permission.RECORD_AUDIO"
 
+                super.onCreate(savedInstanceState);
+                setContentView(R.layout.activity_tukang_dagang);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    requestPermissions(new String[]{
+                            Manifest.permission.ACCESS_FINE_LOCATION,
+                            Manifest.permission.CAMERA,
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                            Manifest.permission.RECORD_AUDIO
+                    }, MY_PERMISSION_FINE_LOCATION);
+                } else {
+                    permissionIsGranted = true;
+                }
 
+                //Set up the webview
+                ConfigXmlParser parser = new ConfigXmlParser();
+                parser.parse(this);
 
-            super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tukang_dagang);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MY_PERMISSION_FINE_LOCATION);
-        } else {
-            permissionIsGranted = true;
-        }
-
-        //Set up the webview
-        ConfigXmlParser parser = new ConfigXmlParser();
-        parser.parse(this);
-
-        Bundle extras = getIntent().getExtras();
-        String jid = null;
-        if (extras != null) {
-            jid = extras.getString("jid");;
-        }else{
-            jid = "123";
-        }
+                Bundle extras = getIntent().getExtras();
+                String jid = null;
+                if (extras != null) {
+                    jid = extras.getString("jid");
+                    ;
+                } else {
+                    jid = "123";
+                }
 
 
 //        Log.d("nais1",jid);
 
-        SystemWebView webView = (SystemWebView) findViewById(R.id.tutorialView);
-        webInterface = new CordovaWebViewImpl(new SystemWebViewEngine(webView));
-        webInterface.init(cordovaInterface, parser.getPluginEntries(), parser.getPreferences());
-        webView.getSettings().setGeolocationEnabled(true);
-        webView.getSettings().setJavaScriptEnabled(true);
-        webView.getSettings().setAllowFileAccess(true);
-        webView.getSettings().setGeolocationEnabled(true);
-        webView.getSettings().setAllowContentAccess(true);
-        webView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
+                SystemWebView webView = (SystemWebView) findViewById(R.id.tutorialView);
+                webInterface = new CordovaWebViewImpl(new SystemWebViewEngine(webView));
+                webInterface.init(cordovaInterface, parser.getPluginEntries(), parser.getPreferences());
+                webView.getSettings().setGeolocationEnabled(true);
+                webView.getSettings().setJavaScriptEnabled(true);
+                webView.getSettings().setAllowFileAccess(true);
+                webView.getSettings().setGeolocationEnabled(true);
+                webView.getSettings().setAllowContentAccess(true);
+                webView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
 
-        webView.loadUrl("javascript:initialize(" + jid+ ");");
-        webView.loadUrl("file:///android_asset/www/main.html?id="+jid);
-        webView.addJavascriptInterface(new WebInterface(this), "Android");
+                webView.loadUrl("javascript:initialize(" + jid + ");");
+                webView.loadUrl("file:///android_asset/www/main.html?id=" + jid);
+                webView.addJavascriptInterface(new WebInterface(this), "Android");
+            }else{
+                Toast.makeText(this.getBaseContext(),"Tidak terdapat koneksi Internet",Toast.LENGTH_LONG).show();
+            }
         }catch (Exception err){
             Toast.makeText(this.getBaseContext(),err.toString(),Toast.LENGTH_LONG).show();
         }

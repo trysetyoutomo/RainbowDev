@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 //System.setProperty('java.awt.headless', 'false')
 
 import groovy.swing.SwingBuilder
+
 android {
     lintOptions {
         checkReleaseBuilds false
@@ -24,8 +25,8 @@ android {
         applicationId "id.co.ale.rainbowDev"
         minSdkVersion 16
         targetSdkVersion 26
-        versionCode 6
-        versionName "1.1.6"
+        versionCode 8
+        versionName "1.1.8"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled = true
@@ -96,8 +97,8 @@ dependencies {
 //    compile 'com.android.support:multidex:1.0.1'
     compile 'com.android.support:multidex:1.0.3'
 //    compile 'junit:junit:4.12'
-    compile ('junit:junit:4.12'){
-        exclude group: 'org.hamcrest', module:'hamcrest-core'
+    compile('junit:junit:4.12') {
+        exclude group: 'org.hamcrest', module: 'hamcrest-core'
     }
 
     implementation files('libs/cordova-4.1.1')

@@ -100,20 +100,20 @@ public class MainActivity extends AppCompatActivity {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    NotificationCompat.Builder notificationBuilder = RainbowSdk.instance().getNotificationBuilder();
-                    notificationBuilder.setContentText(getResources().getString(R.string.notif_connected));
-                    PendingIntent contentIntent = PendingIntent.getActivity(RainbowSdk.instance().getContext(), 0, RainbowIntent.getLauncherIntent(getApplicationContext(), TukangDagang.class), 0);
-                    notificationBuilder.setContentIntent(contentIntent);
-
-                    NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-                    mNotificationManager.notify(RainbowService.EVENT_NOTIFICATION, notificationBuilder.build());
-                    mNotificationManager.cancel(RainbowService.EVENT_NOTIFICATION);
+//                    NotificationCompat.Builder notificationBuilder = RainbowSdk.instance().getNotificationBuilder();
+//                    notificationBuilder.setContentText(getResources().getString(R.string.notif_connected));
+//                    PendingIntent contentIntent = PendingIntent.getActivity(RainbowSdk.instance().getContext(), 0, RainbowIntent.getLauncherIntent(getApplicationContext(), TukangDagang.class), 0);
+//                    notificationBuilder.setContentIntent(contentIntent);
+//
+//                    NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+//                    mNotificationManager.notify(RainbowService.EVENT_NOTIFICATION, notificationBuilder.build());
+//                    mNotificationManager.cancel(RainbowService.EVENT_NOTIFICATION);
 
                     MessengerService.getInstance().startService();
                 }
             });
 
-            showIM();
+//            showIM();
         }
 
         @Override
@@ -128,10 +128,10 @@ public class MainActivity extends AppCompatActivity {
 
         if(connection.isConnected()){
             showIM();
-            Log.d("tomos", "already bos ");
+            Log.d("tomos", "already CONNECT bos ");
         }else{
             connection.start(this.startResponseListener);
-            Log.d("tomos", "Not already bos ");
+            Log.d("tomos", "Not already CONNECT bos ");
 
         }
     }

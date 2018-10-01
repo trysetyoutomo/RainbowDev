@@ -94,21 +94,21 @@ public class ImsgActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         this.msgHeader = (ImageView) findViewById(R.id.msg_header);
-        this.inputContactSearch = (EditText) toolbar.findViewById(R.id.input_search);
-        this.inputContactSearch.addTextChangedListener(inputContactSearchListener);
+//        this.inputContactSearch = (EditText) toolbar.findViewById(R.id.input_search);
+//        this.inputContactSearch.addTextChangedListener(inputContactSearchListener);
         this.btnSearch = (ImageView) findViewById(R.id.btn_search);
 
         this.btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(inputContactSearch.isFocused() && inputContactSearch.getText().length() == 0){
-                    onBackPressed();
-                }else{
-                    msgHeader.setVisibility(View.GONE);
-                    inputContactSearch.setVisibility(View.VISIBLE);
-                    inputContactSearch.requestFocus();
-                    inputContactSearch.callOnClick();
-                }
+//                if(inputContactSearch.isFocused() && inputContactSearch.getText().length() == 0){
+//                    onBackPressed();
+//                }else{
+//                    msgHeader.setVisibility(View.GONE);
+//                    inputContactSearch.setVisibility(View.VISIBLE);
+//                    inputContactSearch.requestFocus();
+//                    inputContactSearch.callOnClick();
+//                }
             }
         });
         this.msgHeader.setOnClickListener(new View.OnClickListener() {
@@ -316,10 +316,10 @@ public class ImsgActivity extends AppCompatActivity
             drawer.closeDrawer(GravityCompat.START);
         } else if(contactSearchFragment != null){
             hideSearchFragment();
-        }else if(inputContactSearch.isFocused()){
-            inputContactSearch.clearFocus();
-            inputContactSearch.setVisibility(View.INVISIBLE);
-            msgHeader.setVisibility(View.VISIBLE);
+//        }else if(inputContactSearch.isFocused()){
+//            inputContactSearch.clearFocus();
+//            inputContactSearch.setVisibility(View.INVISIBLE);
+//            msgHeader.setVisibility(View.VISIBLE);
         }else if(currentFragmentPosition > 0){
             BottomNavigationView bottomNavigationView;
             bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavigation);
@@ -373,9 +373,9 @@ public class ImsgActivity extends AppCompatActivity
             case R.id.nav_user:
                 openProfil();
                 break;
-            case R.id.nav_invitation:
-                openInvitation();
-                break;
+//            case R.id.nav_invitation:
+//                openInvitation();
+//                break;
 //            case R.id.nav_logout:
 //                RainbowSdk.instance().connection().signout(signoutResponseListener);
 //                break;
@@ -451,8 +451,8 @@ public class ImsgActivity extends AppCompatActivity
             fragmentTransaction.commit();
 
             this.bottomNavigationView.setVisibility(View.VISIBLE);
-            this.inputContactSearch.clearFocus();
-            this.inputContactSearch.setVisibility(View.INVISIBLE);
+//            this.inputContactSearch.clearFocus();
+//            this.inputContactSearch.setVisibility(View.INVISIBLE);
             this.msgHeader.setVisibility(View.VISIBLE);
             contactSearchFragment = null;
         }else{

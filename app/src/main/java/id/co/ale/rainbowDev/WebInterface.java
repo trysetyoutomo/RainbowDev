@@ -95,6 +95,15 @@ public class WebInterface extends AppCompatActivity {
     WebInterface(Context c) {
         mContext = c;
         Connection connection = RainbowSdk.instance().connection();
+
+//        String[] perms = {
+//                "android.permission.CAMERA",
+//                "android.permission.WRITE_EXTERNAL_STORAGE",
+//                "android.permission.RECORD_AUDIO"
+//        };
+//        int permsRequestCode = 200;
+//        ActivityCompat.requestPermissions(mContext.startActivity;, perms, permsRequestCode);
+
         if (connection.isConnected()) {
             Log.d("tomos", "Connected");
         } else {
@@ -369,7 +378,7 @@ public class WebInterface extends AppCompatActivity {
 
             } else {
                 Log.d("tomos", "lewat sini 2");
-                showLogin();
+//                showLogin();
             }
         }
     };

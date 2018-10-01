@@ -2748,6 +2748,7 @@ function cariById(id){
               $$(".UMKM_tel").css("display","none");
               $$(".UMKM_sms").css("display","none");
               $$(".UMKM_favorite").css("display","none");
+               $$(".UMKM_marker").css("display","none");
 
              
             }else{
@@ -2755,6 +2756,8 @@ function cariById(id){
               $$(".UMKM_tel").css("display","block");
               $$(".UMKM_sms").css("display","block");
               $$(".UMKM_favorite").css("display","block");
+                $$(".UMKM_marker").css("display","block");
+
               // $$(".fa fa-star  fa-2x").css("display","none");
 
 
@@ -4765,11 +4768,6 @@ function getListOrder(username, tabActive){
         data : "id="+id,
         success : function(r){
           var data = JSON.parse(r);
-<<<<<<< HEAD
-          // alert(JSON.stringify(data));
-=======
-//          alert(JSON.stringify(data));
->>>>>>> 6098d090c0f7c84bd369676a022575f4ee68c87e
            $$.each(data.detail,function(i,v){
                 if (imageExists(server+"/images/product/"+v.id+".jpg")){
                 img = server+"/images/product/"+v.id+".jpg";
@@ -6891,7 +6889,7 @@ $$('#form-register').on('form:success', function (e) {
     if (ulangi_password!=password2){
           myApp.addNotification({
               message: " Konfirmasi kata sandi tidak sama   !"
-          });      return false;
+          });      return false;exit;
     }
 
   // alert('123');
@@ -6902,6 +6900,10 @@ $$('#form-register').on('form:success', function (e) {
       // console.log(data);
        try {
        if (data.status){
+       myApp.addNotification({
+           message: "Terimakasih telah bergabung dengan Tukang Dagang."
+       });
+
        
         myApp.showIndicator();
         var u = $$("#username2").val();
@@ -6909,11 +6911,12 @@ $$('#form-register').on('form:success', function (e) {
         // alert(u);
         window.localStorage.setItem("RegisteringPhone", u);
         clearRegisterLogin();
-        // $$("#form-login").show();
+         $$("#form-login").show();
         $$("#form-register").hide();
+
         // $$(".label-login").html("Masuk");
 
-        $$("#form-verifikasi").show();
+//        $$("#form-verifikasi").show();
 
 
         // $$("#verifikasi").val(data.number);
@@ -6962,6 +6965,8 @@ $$('#form-register').on('form:success', function (e) {
       $$("#phone-verifikasi").val(data.phone);
       // app.sendSms();
       myApp.hidePreloader();
+
+
 
         // alert(data.username);
       

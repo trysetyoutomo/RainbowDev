@@ -148,11 +148,11 @@ public class RoomDetailActivity extends AppCompatActivity {
 
         listContact = (ListView) findViewById(R.id.list_contact);
         listSearch = (ListView) findViewById(R.id.list_contact_search);
-        inputSearch = (EditText) findViewById(R.id.input_search);
+//        inputSearch = (EditText) findViewById(R.id.input_search);
 
         iContactList = new ArrayList<IContact>();
 
-        inputSearch.addTextChangedListener(searchListener);
+//        inputSearch.addTextChangedListener(searchListener);
 
         this.deleteBtn.setOnClickListener(deleteBtnListener);
         this.addConfirm.setOnClickListener(addConfirmListener);
